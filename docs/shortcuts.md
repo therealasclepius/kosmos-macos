@@ -18,7 +18,7 @@
 
 | Shortcut | Action |
 |---|---|
-| `Control + Option + 1–9` | Focus Desktop 1–9 |
+| `Control + 1–9` | Focus Desktop 1–9 |
 | `Shift + Option + 1–9` | Send the focused window to Desktop 1–9 |
 | `Control + Option + B` | BSP layout |
 | `Control + Option + S` | Stack layout |
