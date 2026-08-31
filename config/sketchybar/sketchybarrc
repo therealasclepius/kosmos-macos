@@ -27,36 +27,31 @@ sketchybar --add item front_app left \
 
 sketchybar --add item clock right \
   --set clock icon.drawing=off label.color=0xffd7c995 \
-    background.drawing=on background.color=0xff23372b \
-    background.border_width=1 background.border_color=0xff53685b \
-    update_freq=10 script="$PLUGIN_DIR/clock.sh"
+    background.drawing=off padding_left=6 padding_right=6 \
+    update_freq=10 script="$PLUGIN_DIR/clock.sh" click_script="open -a Calendar"
 
 sketchybar --add item battery right \
   --set battery icon.drawing=off label.color=0xff63b07a \
-    background.drawing=on background.color=0xff23372b \
-    background.border_width=1 background.border_color=0xff53685b update_freq=60 \
+    background.drawing=off padding_left=6 padding_right=6 update_freq=60 \
     script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery system_woke power_source_change
 
 sketchybar --add item volume right \
   --set volume icon.color=0xff63b07a \
-    background.drawing=on background.color=0xff23372b \
-    background.border_width=1 background.border_color=0xff53685b \
+    background.drawing=off padding_left=6 padding_right=6 \
     script="$PLUGIN_DIR/volume.sh" \
     click_script="open x-apple.systempreferences:com.apple.Sound-Settings.extension" \
   --subscribe volume volume_change system_woke
 
 sketchybar --add item memory right \
   --set memory icon="" icon.color=0xffd7c995 \
-    background.drawing=on background.color=0xff23372b \
-    background.border_width=1 background.border_color=0xff53685b \
+    background.drawing=off padding_left=6 padding_right=6 \
     update_freq=15 script="$PLUGIN_DIR/memory.sh" \
     click_script="open -a 'Activity Monitor'"
 
 sketchybar --add item cpu right \
   --set cpu icon="" icon.color=0xff71cead \
-    background.drawing=on background.color=0xff23372b \
-    background.border_width=1 background.border_color=0xff53685b \
+    background.drawing=off padding_left=6 padding_right=6 \
     update_freq=5 script="$PLUGIN_DIR/cpu.sh" \
     click_script="open -a 'Activity Monitor'"
 
