@@ -107,6 +107,8 @@ fi
 run brew services restart sketchybar
 
 if ! $DRY_RUN; then
+  sleep 1
+  launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.sketchybar" 2>/dev/null || true
   killall Finder 2>/dev/null || true
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true
