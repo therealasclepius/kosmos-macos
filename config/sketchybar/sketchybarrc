@@ -26,10 +26,15 @@ sketchybar --add item front_app left \
   --subscribe front_app front_app_switched
 
 sketchybar --add item clock right \
-  --set clock icon="TIME" icon.color=0xffc6a0f6 update_freq=10 script="$PLUGIN_DIR/clock.sh"
+  --set clock icon.drawing=off label.color=0xffc6a0f6 \
+    background.drawing=on background.color=0xff24273a \
+    background.border_width=1 background.border_color=0xff494d64 \
+    update_freq=10 script="$PLUGIN_DIR/clock.sh"
 
 sketchybar --add item battery right \
-  --set battery icon="BAT" icon.color=0xffa6da95 update_freq=60 \
+  --set battery icon.drawing=off label.color=0xffa6da95 \
+    background.drawing=on background.color=0xff24273a \
+    background.border_width=1 background.border_color=0xff494d64 update_freq=60 \
     script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery system_woke power_source_change
 
