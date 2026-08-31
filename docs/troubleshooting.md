@@ -57,6 +57,25 @@ defaults write com.apple.finder CreateDesktop -bool true
 killall Finder
 ```
 
+## Command-Shift-4 seems to do nothing
+
+Because desktop items are hidden, Kósmos redirects normal macOS screenshots to:
+
+```text
+~/Pictures/Kosmos Captures
+```
+
+Restore that visible destination and restart the menu service with:
+
+```sh
+mkdir -p "$HOME/Pictures/Kosmos Captures"
+defaults write com.apple.screencapture location "$HOME/Pictures/Kosmos Captures"
+defaults write com.apple.screencapture show-thumbnail -bool true
+killall SystemUIServer
+```
+
+If the crosshair never appears, enable the screenshot shortcuts under **System Settings → Keyboard → Keyboard Shortcuts → Screenshots**.
+
 ## LazyVim plugins are not present yet
 
 The first `nvim` launch downloads its plugin manager and plugins. Internet access is required. Inside Neovim, use `:Lazy` to inspect installation progress.

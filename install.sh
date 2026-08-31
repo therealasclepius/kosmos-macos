@@ -5,6 +5,7 @@ ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 STATE_DIR="$HOME/.local/state/kosmos"
 BACKUP_DIR="$STATE_DIR/backups/$(date +%Y%m%d-%H%M%S)"
 WALLPAPER_PATH="$HOME/Pictures/Kosmos/osaka-jade-bg.jpg"
+CAPTURE_DIR="$HOME/Pictures/Kosmos Captures"
 RAYCAST_DIR=${KOSMOS_RAYCAST_DIR:-"$HOME/Documents/Raycast Script Commands"}
 SELECTED_THEME=${KOSMOS_THEME:-osaka-jade}
 DRY_RUN=false
@@ -61,7 +62,7 @@ else
   warn "npm is unavailable; Firecrawl CLI was skipped."
 fi
 
-run mkdir -p "$BACKUP_DIR" "$STATE_DIR"
+run mkdir -p "$BACKUP_DIR" "$STATE_DIR" "$CAPTURE_DIR"
 
 install_link() {
   local source=$1 target=$2 relative backup
@@ -148,6 +149,8 @@ run defaults write NSGlobalDomain KeyRepeat -int 2
 run defaults write NSGlobalDomain InitialKeyRepeat -int 12
 run defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 run defaults write com.apple.finder AppleShowAllFiles -bool true
+run defaults write com.apple.screencapture location -string "$CAPTURE_DIR"
+run defaults write com.apple.screencapture show-thumbnail -bool true
 run defaults write com.apple.dock mru-spaces -bool false
 run defaults write com.apple.dock workspaces-auto-swoosh -bool false
 run defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false

@@ -137,6 +137,14 @@ if [[ $(defaults read com.apple.finder CreateDesktop 2>/dev/null) == "0" ]]; the
   warnings=$((warnings + 1))
 fi
 
+expected_capture_dir="$HOME/Pictures/Kosmos Captures"
+if [[ $(defaults read com.apple.screencapture location 2>/dev/null) == "$expected_capture_dir" ]]; then
+  printf '✓ macOS screenshots save to the visible Kósmos Captures folder\n'
+else
+  printf '✗ macOS screenshots may be hidden on the Desktop\n'
+  failures=$((failures + 1))
+fi
+
 printf '\nPackage manifest\n'
 if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file "$ROOT_DIR/Brewfile" >/dev/null 2>&1; then
   printf '✓ Brewfile dependencies are satisfied\n'
