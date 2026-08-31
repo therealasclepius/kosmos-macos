@@ -94,7 +94,7 @@ for plugin in "$ROOT_DIR"/config/sketchybar/plugins/*.sh; do run chmod +x "$plug
 # Reversible macOS preferences.
 run defaults write NSGlobalDomain AppleInterfaceStyle -string Dark
 run defaults write NSGlobalDomain _HIHideMenuBar -bool true
-run defaults write NSGlobalDomain KeyRepeat -int 1
+run defaults write NSGlobalDomain KeyRepeat -int 2
 run defaults write NSGlobalDomain InitialKeyRepeat -int 12
 run defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 run defaults write com.apple.finder AppleShowAllFiles -bool true
