@@ -22,6 +22,7 @@ remove_link() {
 }
 
 remove_link "$HOME/.yabairc"
+remove_link "$HOME/.config/yabai/yabairc"
 remove_link "$HOME/.skhdrc"
 remove_link "$HOME/.tmux.conf"
 remove_link "$HOME/.config/sketchybar"

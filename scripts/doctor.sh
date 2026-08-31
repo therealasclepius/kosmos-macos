@@ -17,7 +17,7 @@ for command in brew yabai skhd sketchybar tmux nvim yazi lazygit gh delta rg fd 
 done
 
 printf '\nConfiguration\n'
-for path in "$HOME/.yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
+for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
   "$HOME/.config/sketchybar" "$HOME/.config/nvim" "$HOME/.config/yazi"; do
   if [[ -e "$path" || -L "$path" ]]; then
     printf '✓ %s\n' "$path"

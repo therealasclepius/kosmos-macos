@@ -75,6 +75,7 @@ install_link() {
 }
 
 install_link "$ROOT_DIR/config/yabairc" "$HOME/.yabairc"
+install_link "$ROOT_DIR/config/yabairc" "$HOME/.config/yabai/yabairc"
 install_link "$ROOT_DIR/config/skhdrc" "$HOME/.skhdrc"
 install_link "$ROOT_DIR/config/tmux.conf" "$HOME/.tmux.conf"
 install_link "$ROOT_DIR/config/sketchybar" "$HOME/.config/sketchybar"
