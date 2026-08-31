@@ -173,6 +173,7 @@ if ! $DRY_RUN; then
   killall Finder 2>/dev/null || true
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true
+  launchctl kickstart -k "gui/$(id -u)/com.apple.screencaptureui.agent" 2>/dev/null || true
 fi
 
 say "Installation complete."
