@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Square blue highlight for the focused window; hide inactive borders.
+# Rounded blue highlight that follows macOS window corners; hide inactive borders.
 options=(
-  style=square
+  style=round
   width=3.0
   hidpi=on
   active_color=0xff8aadf4
