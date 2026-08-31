@@ -20,7 +20,8 @@ done
 
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
-  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/sketchybar" "$HOME/.config/borders" \
+  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/ghostty/config" \
+  "$HOME/.config/sketchybar" "$HOME/.config/borders" \
   "$HOME/.config/nvim" "$HOME/.config/yazi"; do
   if [[ -e "$path" || -L "$path" ]]; then
     printf '✓ %s\n' "$path"
@@ -51,6 +52,15 @@ else
   printf '✗ SketchyBar is not responding\n'
   failures=$((failures + 1))
 fi
+
+for item_name in cpu memory volume; do
+  if sketchybar --query "$item_name" >/dev/null 2>&1; then
+    printf '✓ SketchyBar %s widget is responding\n' "$item_name"
+  else
+    printf '✗ SketchyBar %s widget is missing\n' "$item_name"
+    failures=$((failures + 1))
+  fi
+done
 
 if pgrep -x borders >/dev/null 2>&1; then
   printf '✓ borders is running\n'

@@ -2,23 +2,23 @@
 
 An ordered, keyboard-first macOS environment inspired by the workflow and visual cohesion of Omarchy.
 
-![Kósmos wallpaper](assets/kosmos-wallpaper-glitch.png)
+![Osaka Jade wallpaper](assets/osaka-jade-bg.jpg)
 
 Kósmos combines automatic window tiling, fast workspace navigation, a custom status bar, persistent terminal sessions, a polished terminal editor, and modern command-line tools. It is an independent community project—not an official Omarchy port or distribution.
 
 ## What it installs
 
 - **yabai + skhd** — BSP tiling and keyboard-driven window control
-- **SketchyBar** — desktops, focused app, battery, and time
+- **SketchyBar** — desktops, focused app, system metrics, volume, battery, and time
 - **JankyBorders** — active-window focus outline matched to macOS corners
-- **Ghostty + tmux** — fast terminal and persistent sessions
+- **Ghostty + tmux** — Osaka Jade terminal and persistent sessions
 - **Neovim + LazyVim** — polished keyboard-first editing
 - **Yazi** — terminal file manager
 - **Raycast** — application launcher and system command center
 - **Lazygit, GitHub CLI, Delta** — Git workflow
 - **ripgrep, fd, jq, mise** — modern developer utilities
 - **Firecrawl CLI** — web search and extraction tooling
-- **JetBrainsMono Nerd Font** and a Catppuccin Macchiato terminal theme
+- **JetBrainsMono Nerd Font** and the Osaka Jade color system
 
 ## Requirements
 
@@ -94,6 +94,10 @@ The uninstaller removes only symlinks owned by this repository. Packages and sys
 ## Philosophy
 
 Kósmos is Greek for order: a system whose parts form a coherent whole. The project brings that idea to macOS through sensible defaults, visible state, and a workflow that keeps both hands on the keyboard.
+
+## Theme credit
+
+The Osaka Jade palette and wallpaper come from [Justikun's Omarchy Osaka Jade theme](https://github.com/Justikun/omarchy-osaka-jade-theme), created by Justin Lowry and used under the MIT License. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## License
 

@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 STATE_DIR="$HOME/.local/state/kosmos"
 BACKUP_DIR="$STATE_DIR/backups/$(date +%Y%m%d-%H%M%S)"
+WALLPAPER_PATH="$HOME/Pictures/Kosmos/osaka-jade-bg.jpg"
 DRY_RUN=false
 
 if [[ "${1:-}" == "--dry-run" ]]; then
@@ -75,10 +76,12 @@ install_link() {
 }
 
 install_link "$ROOT_DIR/config/yabairc" "$HOME/.yabairc"
+install_link "$ROOT_DIR/assets/osaka-jade-bg.jpg" "$WALLPAPER_PATH"
 install_link "$ROOT_DIR/config/yabairc" "$HOME/.config/yabai/yabairc"
 install_link "$ROOT_DIR/config/yabai/toggle-maximize.sh" "$HOME/.config/yabai/toggle-maximize.sh"
 install_link "$ROOT_DIR/config/skhdrc" "$HOME/.skhdrc"
 install_link "$ROOT_DIR/config/tmux.conf" "$HOME/.tmux.conf"
+install_link "$ROOT_DIR/config/ghostty/config" "$HOME/.config/ghostty/config"
 install_link "$ROOT_DIR/config/sketchybar" "$HOME/.config/sketchybar"
 install_link "$ROOT_DIR/config/borders" "$HOME/.config/borders"
 install_link "$ROOT_DIR/config/nvim" "$HOME/.config/nvim"
@@ -91,10 +94,12 @@ fi
 run chmod +x "$ROOT_DIR/config/yabairc" "$ROOT_DIR/config/sketchybar/sketchybarrc"
 run chmod +x "$ROOT_DIR/config/borders/bordersrc"
 run chmod +x "$ROOT_DIR/config/yabai/toggle-maximize.sh"
+run chmod +x "$ROOT_DIR/scripts/set-wallpaper.sh"
 for plugin in "$ROOT_DIR"/config/sketchybar/plugins/*.sh; do run chmod +x "$plugin"; done
 
 # Reversible macOS preferences.
 run defaults write NSGlobalDomain AppleInterfaceStyle -string Dark
+run defaults write NSGlobalDomain AppleAccentColor -int 3
 run defaults write NSGlobalDomain _HIHideMenuBar -bool true
 run defaults write NSGlobalDomain KeyRepeat -int 2
 run defaults write NSGlobalDomain InitialKeyRepeat -int 12
@@ -117,6 +122,7 @@ if ! $DRY_RUN; then
   sleep 1
   launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.sketchybar" 2>/dev/null || true
   launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.borders" 2>/dev/null || true
+  "$ROOT_DIR/scripts/set-wallpaper.sh" "$WALLPAPER_PATH"
   killall Finder 2>/dev/null || true
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true

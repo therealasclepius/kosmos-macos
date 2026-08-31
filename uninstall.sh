@@ -23,10 +23,12 @@ remove_link() {
 }
 
 remove_link "$HOME/.yabairc"
+remove_link "$HOME/Pictures/Kosmos/osaka-jade-bg.jpg"
 remove_link "$HOME/.config/yabai/yabairc"
 remove_link "$HOME/.config/yabai/toggle-maximize.sh"
 remove_link "$HOME/.skhdrc"
 remove_link "$HOME/.tmux.conf"
+remove_link "$HOME/.config/ghostty/config"
 remove_link "$HOME/.config/sketchybar"
 remove_link "$HOME/.config/borders"
 remove_link "$HOME/.config/nvim"
