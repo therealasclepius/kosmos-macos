@@ -31,7 +31,7 @@ ctrl + alt - l : yabai -m window --resize right:40:0 || yabai -m window --resize
 # Layout and window controls
 alt - b : yabai -m space --balance
 alt - r : yabai -m space --rotate 90
-alt - f : yabai -m window --toggle float; yabai -m window --grid 1:1:0:0:1:1
+alt - f : "$HOME/.config/yabai/toggle-maximize.sh"
 shift + alt - space : yabai -m window --toggle float --grid 4:4:1:1:2:2
 ctrl + alt - b : yabai -m space --layout bsp
 ctrl + alt - s : yabai -m space --layout stack

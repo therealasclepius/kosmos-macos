@@ -76,6 +76,7 @@ install_link() {
 
 install_link "$ROOT_DIR/config/yabairc" "$HOME/.yabairc"
 install_link "$ROOT_DIR/config/yabairc" "$HOME/.config/yabai/yabairc"
+install_link "$ROOT_DIR/config/yabai/toggle-maximize.sh" "$HOME/.config/yabai/toggle-maximize.sh"
 install_link "$ROOT_DIR/config/skhdrc" "$HOME/.skhdrc"
 install_link "$ROOT_DIR/config/tmux.conf" "$HOME/.tmux.conf"
 install_link "$ROOT_DIR/config/sketchybar" "$HOME/.config/sketchybar"
@@ -87,6 +88,7 @@ if ! $DRY_RUN; then
 fi
 
 run chmod +x "$ROOT_DIR/config/yabairc" "$ROOT_DIR/config/sketchybar/sketchybarrc"
+run chmod +x "$ROOT_DIR/config/yabai/toggle-maximize.sh"
 for plugin in "$ROOT_DIR"/config/sketchybar/plugins/*.sh; do run chmod +x "$plugin"; done
 
 # Reversible macOS preferences.
@@ -97,6 +99,7 @@ run defaults write NSGlobalDomain InitialKeyRepeat -int 12
 run defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 run defaults write com.apple.finder AppleShowAllFiles -bool true
 run defaults write com.apple.dock mru-spaces -bool false
+run defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
 if $DRY_RUN; then
   run yabai --start-service

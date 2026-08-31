@@ -1,7 +1,9 @@
 #!/bin/bash
 set -u
 
+ROOT_DIR=$(cd "$(dirname "$0")/.." && pwd)
 failures=0
+warnings=0
 check_command() {
   if command -v "$1" >/dev/null 2>&1; then
     printf '✓ %-14s %s\n' "$1" "$(command -v "$1")"
@@ -18,7 +20,7 @@ done
 
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
-  "$HOME/.config/sketchybar" "$HOME/.config/nvim" "$HOME/.config/yazi"; do
+  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/sketchybar" "$HOME/.config/nvim" "$HOME/.config/yazi"; do
   if [[ -e "$path" || -L "$path" ]]; then
     printf '✓ %s\n' "$path"
   else
@@ -28,25 +30,79 @@ for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOM
 done
 
 printf '\nServices\n'
-for service in yabai skhd; do
-  if pgrep -x "$service" >/dev/null 2>&1; then
-    printf '✓ %s is running\n' "$service"
-  else
-    printf '✗ %s is not running\n' "$service"
-    failures=$((failures + 1))
-  fi
-done
-
-if pgrep -x sketchybar >/dev/null 2>&1; then
-  printf '✓ sketchybar is running\n'
+if yabai -m query --spaces >/dev/null 2>&1; then
+  printf '✓ yabai is responding\n'
 else
-  printf '✗ sketchybar is not running\n'
+  printf '✗ yabai is not responding\n'
+  failures=$((failures + 1))
+fi
+
+if launchctl print "gui/$(id -u)/com.koekeishiya.skhd" 2>/dev/null | grep -q 'state = running'; then
+  printf '✓ skhd is running\n'
+else
+  printf '✗ skhd is not running\n'
+  failures=$((failures + 1))
+fi
+
+if sketchybar --query bar >/dev/null 2>&1; then
+  printf '✓ SketchyBar is responding\n'
+else
+  printf '✗ SketchyBar is not responding\n'
+  failures=$((failures + 1))
+fi
+
+printf '\nRuntime\n'
+if [[ $(yabai -m config layout 2>/dev/null) == "bsp" ]]; then
+  printf '✓ BSP tiling is active\n'
+else
+  printf '✗ BSP tiling is not active\n'
+  failures=$((failures + 1))
+fi
+
+if [[ $(yabai -m config focus_follows_mouse 2>/dev/null) == "autofocus" ]]; then
+  printf '✓ hover focus is active\n'
+else
+  printf '✗ hover focus is not active\n'
+  failures=$((failures + 1))
+fi
+
+if yabai -m signal --list 2>/dev/null | jq -e '.[] | select(.label == "kosmos_restore_hover")' >/dev/null; then
+  printf '✓ hover-focus recovery is registered\n'
+else
+  printf '✗ hover-focus recovery is missing\n'
+  failures=$((failures + 1))
+fi
+
+if [[ $(defaults read com.apple.dock mru-spaces 2>/dev/null) == "0" ]]; then
+  printf '✓ automatic Space reordering is disabled\n'
+else
+  printf '✗ automatic Space reordering is enabled\n'
+  failures=$((failures + 1))
+fi
+
+if [[ $(defaults read com.apple.WindowManager EnableStandardClickToShowDesktop 2>/dev/null) == "0" ]]; then
+  printf '✓ wallpaper clicks will not disrupt Space focus\n'
+else
+  printf '! set “Click wallpaper to reveal desktop” to “Only in Stage Manager”\n'
+  warnings=$((warnings + 1))
+fi
+
+if [[ $(defaults read com.apple.finder CreateDesktop 2>/dev/null) == "0" ]]; then
+  printf '! desktop icons are hidden; focusing a completely empty Space may be less reliable\n'
+  warnings=$((warnings + 1))
+fi
+
+printf '\nPackage manifest\n'
+if HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file "$ROOT_DIR/Brewfile" >/dev/null 2>&1; then
+  printf '✓ Brewfile dependencies are satisfied\n'
+else
+  printf '✗ Brewfile dependencies need installation or updates\n'
   failures=$((failures + 1))
 fi
 
 printf '\n'
 if (( failures == 0 )); then
-  printf 'Kósmos is healthy.\n'
+  printf 'Kósmos is healthy with %d warning(s).\n' "$warnings"
 else
   printf '%d check(s) need attention. See docs/troubleshooting.md.\n' "$failures"
 fi

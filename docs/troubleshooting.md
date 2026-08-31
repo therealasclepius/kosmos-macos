@@ -6,6 +6,12 @@ Start with:
 ./scripts/doctor.sh
 ```
 
+To restart and re-check the complete desktop stack:
+
+```sh
+./scripts/restart.sh
+```
+
 ## Shortcuts do nothing
 
 Open **System Settings → Privacy & Security → Accessibility** and confirm that skhd, yabai, and the terminal used to install Kósmos are enabled. Toggle an entry off and on, then restart the services:
@@ -34,6 +40,22 @@ Set **Automatically hide and show the menu bar** to **Always** in System Setting
 ## Desktop shortcuts fail
 
 Kósmos maps Desktops 1–9, but macOS must already have those desktops. Create them in Mission Control. Also disable conflicting macOS shortcuts under **Keyboard → Keyboard Shortcuts → Mission Control**.
+
+## Desktop icons are hidden
+
+Disabling Finder's desktop layer keeps the wallpaper clean, but yabai may not be able to focus a completely empty Space reliably. Kósmos leaves the desktop layer enabled by default. To hide it deliberately:
+
+```sh
+defaults write com.apple.finder CreateDesktop -bool false
+killall Finder
+```
+
+Restore the most reliable yabai behavior with:
+
+```sh
+defaults write com.apple.finder CreateDesktop -bool true
+killall Finder
+```
 
 ## LazyVim plugins are not present yet
 

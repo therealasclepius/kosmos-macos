@@ -64,6 +64,12 @@ Then verify the environment:
 ./scripts/doctor.sh
 ```
 
+If the desktop stack ever stops responding, restart and verify it with:
+
+```sh
+./scripts/restart.sh
+```
+
 ## Everyday use
 
 Press `Option + Return` for Ghostty or `Shift + Option + Return` for the persistent `main` tmux workspace. Press `Shift + Option + Y` for Yazi and `Shift + Option + V` for Neovim.
