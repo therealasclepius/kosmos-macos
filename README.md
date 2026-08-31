@@ -10,6 +10,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 
 - **yabai + skhd** — BSP tiling and keyboard-driven window control
 - **SketchyBar** — desktops, focused app, battery, and time
+- **JankyBorders** — square active-window focus outline
 - **Ghostty + tmux** — fast terminal and persistent sessions
 - **Neovim + LazyVim** — polished keyboard-first editing
 - **Yazi** — terminal file manager

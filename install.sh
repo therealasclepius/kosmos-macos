@@ -80,6 +80,7 @@ install_link "$ROOT_DIR/config/yabai/toggle-maximize.sh" "$HOME/.config/yabai/to
 install_link "$ROOT_DIR/config/skhdrc" "$HOME/.skhdrc"
 install_link "$ROOT_DIR/config/tmux.conf" "$HOME/.tmux.conf"
 install_link "$ROOT_DIR/config/sketchybar" "$HOME/.config/sketchybar"
+install_link "$ROOT_DIR/config/borders" "$HOME/.config/borders"
 install_link "$ROOT_DIR/config/nvim" "$HOME/.config/nvim"
 install_link "$ROOT_DIR/config/yazi" "$HOME/.config/yazi"
 
@@ -88,6 +89,7 @@ if ! $DRY_RUN; then
 fi
 
 run chmod +x "$ROOT_DIR/config/yabairc" "$ROOT_DIR/config/sketchybar/sketchybarrc"
+run chmod +x "$ROOT_DIR/config/borders/bordersrc"
 run chmod +x "$ROOT_DIR/config/yabai/toggle-maximize.sh"
 for plugin in "$ROOT_DIR"/config/sketchybar/plugins/*.sh; do run chmod +x "$plugin"; done
 
@@ -109,10 +111,12 @@ else
   skhd --start-service 2>/dev/null || skhd --restart-service
 fi
 run brew services restart sketchybar
+run brew services restart borders
 
 if ! $DRY_RUN; then
   sleep 1
   launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.sketchybar" 2>/dev/null || true
+  launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.borders" 2>/dev/null || true
   killall Finder 2>/dev/null || true
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true

@@ -14,13 +14,14 @@ check_command() {
 }
 
 printf 'Kósmos system check\n\n'
-for command in brew yabai skhd sketchybar tmux nvim yazi lazygit gh delta rg fd jq mise firecrawl; do
+for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delta rg fd jq mise firecrawl; do
   check_command "$command"
 done
 
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
-  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/sketchybar" "$HOME/.config/nvim" "$HOME/.config/yazi"; do
+  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/sketchybar" "$HOME/.config/borders" \
+  "$HOME/.config/nvim" "$HOME/.config/yazi"; do
   if [[ -e "$path" || -L "$path" ]]; then
     printf '✓ %s\n' "$path"
   else
@@ -48,6 +49,13 @@ if sketchybar --query bar >/dev/null 2>&1; then
   printf '✓ SketchyBar is responding\n'
 else
   printf '✗ SketchyBar is not responding\n'
+  failures=$((failures + 1))
+fi
+
+if pgrep -x borders >/dev/null 2>&1; then
+  printf '✓ borders is running\n'
+else
+  printf '✗ borders is not running\n'
   failures=$((failures + 1))
 fi
 

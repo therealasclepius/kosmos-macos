@@ -12,6 +12,7 @@ read -r answer
 yabai --stop-service 2>/dev/null || true
 skhd --stop-service 2>/dev/null || true
 brew services stop sketchybar 2>/dev/null || true
+brew services stop borders 2>/dev/null || true
 
 remove_link() {
   local target=$1
@@ -27,6 +28,7 @@ remove_link "$HOME/.config/yabai/toggle-maximize.sh"
 remove_link "$HOME/.skhdrc"
 remove_link "$HOME/.tmux.conf"
 remove_link "$HOME/.config/sketchybar"
+remove_link "$HOME/.config/borders"
 remove_link "$HOME/.config/nvim"
 remove_link "$HOME/.config/yazi"
 
