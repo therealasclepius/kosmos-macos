@@ -15,6 +15,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 - **Neovim + LazyVim** — polished keyboard-first editing
 - **Yazi** — terminal file manager
 - **Raycast** — application launcher and system command center
+- **CleanShot X** — screenshots, annotation, scrolling capture, recording, OCR, and a Quick Access Overlay (license or Setapp required)
 - **Lazygit, GitHub CLI, Delta** — Git workflow
 - **ripgrep, fd, jq, mise** — modern developer utilities
 - **Firecrawl CLI** — web search and extraction tooling

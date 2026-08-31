@@ -16,6 +16,11 @@ shift + alt - m : open -a Messages
 shift + alt - n : open -a Notes
 shift + alt - i : open -a Mail
 
+# CleanShot X replaces the built-in screenshot shortcuts.
+cmd + shift - 3 : open "cleanshot://capture-fullscreen"
+cmd + shift - 4 : open "cleanshot://capture-area"
+cmd + shift - 5 : open "cleanshot://all-in-one"
+
 # Move windows in the BSP tree
 shift + alt - h : yabai -m window --warp west
 shift + alt - j : yabai -m window --warp south

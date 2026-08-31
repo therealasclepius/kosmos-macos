@@ -40,6 +40,16 @@ Create the desired desktops once in Mission Control. macOS restricts automatic d
 | `Shift + Option + N` | Notes |
 | `Shift + Option + I` | Mail |
 
+## Screenshots
+
+| Shortcut | Action |
+|---|---|
+| `Command + Shift + 3` | CleanShot fullscreen capture |
+| `Command + Shift + 4` | CleanShot area capture |
+| `Command + Shift + 5` | CleanShot All-In-One capture menu |
+
+CleanShot's Quick Access Overlay replaces the macOS floating thumbnail and adds copy, save, annotate, upload, pin, and drag-and-drop actions.
+
 ## tmux
 
 The prefix is `Control + Space`.

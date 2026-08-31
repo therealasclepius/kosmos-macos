@@ -27,4 +27,5 @@ brew "ffmpeg"
 
 cask "ghostty"
 cask "raycast"
+cask "cleanshot"
 cask "font-jetbrains-mono-nerd-font"

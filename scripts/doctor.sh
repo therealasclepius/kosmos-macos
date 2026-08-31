@@ -19,6 +19,13 @@ for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delt
   check_command "$command"
 done
 
+if [[ -d /Applications/CleanShot\ X.app ]]; then
+  printf '✓ CleanShot X is installed\n'
+else
+  printf '✗ CleanShot X is missing\n'
+  failures=$((failures + 1))
+fi
+
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
   "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/ghostty/config" \

@@ -4,7 +4,11 @@ set -euo pipefail
 CAPTURE_DIR="$HOME/Pictures/Kosmos Captures"
 
 notify() {
-  osascript -e "display notification \"$2\" with title \"$1\"" 2>/dev/null || true
+  osascript - "$1" "$2" <<'APPLESCRIPT' 2>/dev/null || true
+on run argv
+  display notification (item 2 of argv) with title (item 1 of argv)
+end run
+APPLESCRIPT
 }
 
 usage() {
@@ -17,6 +21,17 @@ capture_screenshot() {
   timestamp=$(date +%Y-%m-%d_%H-%M-%S)
   mkdir -p "$CAPTURE_DIR"
   output_file="$CAPTURE_DIR/screenshot-$timestamp.png"
+
+  if [[ -d /Applications/CleanShot\ X.app ]]; then
+    case "$selection:$destination" in
+      region:copy) open 'cleanshot://capture-area?action=copy' ;;
+      region:save) open 'cleanshot://capture-area?action=save' ;;
+      fullscreen:copy) open 'cleanshot://capture-fullscreen?action=copy' ;;
+      fullscreen:save) open 'cleanshot://capture-fullscreen?action=save' ;;
+      *) usage >&2; exit 2 ;;
+    esac
+    return
+  fi
 
   case "$selection:$destination" in
     region:copy) screencapture -i -c ;;

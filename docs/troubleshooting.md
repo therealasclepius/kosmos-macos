@@ -59,7 +59,9 @@ killall Finder
 
 ## Command-Shift-4 seems to do nothing
 
-Because desktop items are hidden, Kósmos redirects normal macOS screenshots to:
+Kósmos maps `Command-Shift-3/4/5` to CleanShot X. Complete CleanShot's first-run license or Setapp activation and allow **Screen & System Audio Recording** when macOS asks.
+
+If CleanShot is unavailable, Kósmos redirects normal macOS screenshots to:
 
 ```text
 ~/Pictures/Kosmos Captures
