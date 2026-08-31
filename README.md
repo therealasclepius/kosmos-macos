@@ -2,7 +2,7 @@
 
 An ordered, keyboard-first macOS environment inspired by the workflow and visual cohesion of Omarchy.
 
-![Kósmos wallpaper](assets/kosmos-wallpaper.png)
+![Kósmos wallpaper](assets/kosmos-wallpaper-glitch.png)
 
 Kósmos combines automatic window tiling, fast workspace navigation, a custom status bar, persistent terminal sessions, a polished terminal editor, and modern command-line tools. It is an independent community project—not an official Omarchy port or distribution.
 
