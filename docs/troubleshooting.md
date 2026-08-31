@@ -3,13 +3,13 @@
 Start with:
 
 ```sh
-./scripts/doctor.sh
+kosmos doctor
 ```
 
 To restart and re-check the complete desktop stack:
 
 ```sh
-./scripts/restart.sh
+kosmos restart
 ```
 
 ## Shortcuts do nothing
@@ -61,6 +61,20 @@ killall Finder
 
 The first `nvim` launch downloads its plugin manager and plugins. Internet access is required. Inside Neovim, use `:Lazy` to inspect installation progress.
 
+## Raycast does not show Kósmos commands
+
+In Raycast Settings, open **Extensions → Script Commands** and confirm this directory is present:
+
+```text
+~/Documents/Raycast Script Commands
+```
+
+Use Raycast's **Reload Script Directories** command, then search for “Kósmos”. OCR and QR capture require Raycast under **Privacy & Security → Screen & System Audio Recording**.
+
+## The terminal prompt is duplicated
+
+Kósmos sources its shell workflow from the marked block in `~/.zshrc`. Remove older, separate `starship init`, `zoxide init`, `fzf --zsh`, or `mise activate` lines if you previously configured those tools yourself.
+
 ## Restore an older configuration
 
 Installer backups are timestamped under:
@@ -69,4 +83,4 @@ Installer backups are timestamped under:
 ~/.local/state/kosmos/backups/
 ```
 
-Run `./uninstall.sh`, then copy the desired backup files into their original locations.
+For a Kósmos snapshot, use `kosmos snapshot list` followed by `kosmos snapshot restore ARCHIVE --yes`. For a pre-install backup, run `./uninstall.sh`, then copy the desired files into their original locations.

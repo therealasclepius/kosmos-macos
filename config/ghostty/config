@@ -1,26 +1,7 @@
-# Osaka Jade terminal palette from Justikun's Omarchy theme.
+# Kósmos terminal base. The active palette is managed by `kosmos theme set`.
+config-file = ~/.config/kosmos/ghostty-theme.conf
 font-family = JetBrainsMono Nerd Font Mono
 font-size = 14
-background = #111c18
-foreground = #C1C497
-cursor-color = #D7C995
-cursor-text = #000000
-palette = 0=#23372B
-palette = 1=#FF5345
-palette = 2=#549E6A
-palette = 3=#459451
-palette = 4=#509475
-palette = 5=#D2689C
-palette = 6=#2DD5B7
-palette = 7=#F6F5DD
-palette = 8=#53685B
-palette = 9=#DB9F9C
-palette = 10=#63B07A
-palette = 11=#E5C736
-palette = 12=#ACD4CF
-palette = 13=#75BBB3
-palette = 14=#8CD3CB
-palette = 15=#9EEBB3
 background-opacity = 0.94
 background-blur-radius = 20
 window-padding-x = 12

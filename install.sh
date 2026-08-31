@@ -5,7 +5,14 @@ ROOT_DIR=$(cd "$(dirname "$0")" && pwd)
 STATE_DIR="$HOME/.local/state/kosmos"
 BACKUP_DIR="$STATE_DIR/backups/$(date +%Y%m%d-%H%M%S)"
 WALLPAPER_PATH="$HOME/Pictures/Kosmos/osaka-jade-bg.jpg"
+RAYCAST_DIR=${KOSMOS_RAYCAST_DIR:-"$HOME/Documents/Raycast Script Commands"}
+SELECTED_THEME=${KOSMOS_THEME:-osaka-jade}
 DRY_RUN=false
+BACKUP_USED=false
+
+if [[ -z "${KOSMOS_THEME+x}" && -f "$HOME/.config/kosmos/theme" ]]; then
+  SELECTED_THEME=$(<"$HOME/.config/kosmos/theme")
+fi
 
 if [[ "${1:-}" == "--dry-run" ]]; then
   DRY_RUN=true
@@ -70,6 +77,7 @@ install_link() {
   if [[ -e "$target" || -L "$target" ]]; then
     run mkdir -p "$(dirname "$backup")"
     run mv "$target" "$backup"
+    BACKUP_USED=true
     say "Backed up $target"
   fi
   run ln -s "$source" "$target"
@@ -86,16 +94,51 @@ install_link "$ROOT_DIR/config/sketchybar" "$HOME/.config/sketchybar"
 install_link "$ROOT_DIR/config/borders" "$HOME/.config/borders"
 install_link "$ROOT_DIR/config/nvim" "$HOME/.config/nvim"
 install_link "$ROOT_DIR/config/yazi" "$HOME/.config/yazi"
+install_link "$ROOT_DIR/config/zsh/kosmos.zsh" "$HOME/.config/kosmos/shell.zsh"
+install_link "$ROOT_DIR/bin/kosmos" "$HOME/.local/bin/kosmos"
+install_link "$HOME/.config/kosmos/starship.toml" "$HOME/.config/starship.toml"
 
-if ! $DRY_RUN; then
+for raycast_script in "$ROOT_DIR"/config/raycast/scripts/*.sh; do
+  install_link "$raycast_script" "$RAYCAST_DIR/$(basename "$raycast_script")"
+done
+
+configure_zsh() {
+  local begin_marker='# >>> Kósmos >>>'
+  local zshrc="$HOME/.zshrc"
+  if [[ -f "$zshrc" ]] && grep -Fq "$begin_marker" "$zshrc"; then
+    say "Shell integration is already configured"
+    return
+  fi
+  if $DRY_RUN; then
+    printf '+ add Kósmos source block to %q\n' "$zshrc"
+    return
+  fi
+  if [[ -f "$zshrc" ]]; then
+    mkdir -p "$BACKUP_DIR"
+    cp -p "$zshrc" "$BACKUP_DIR/zshrc-before-kosmos"
+    BACKUP_USED=true
+  fi
+  {
+    printf '\n%s\n' "$begin_marker"
+    printf '[[ -r "$HOME/.config/kosmos/shell.zsh" ]] && source "$HOME/.config/kosmos/shell.zsh"\n'
+    printf '# <<< Kósmos <<<\n'
+  } >> "$zshrc"
+}
+
+configure_zsh
+
+if ! $DRY_RUN && $BACKUP_USED; then
   printf '%s\n' "$BACKUP_DIR" > "$STATE_DIR/latest-backup"
 fi
 
 run chmod +x "$ROOT_DIR/config/yabairc" "$ROOT_DIR/config/sketchybar/sketchybarrc"
 run chmod +x "$ROOT_DIR/config/borders/bordersrc"
 run chmod +x "$ROOT_DIR/config/yabai/toggle-maximize.sh"
-run chmod +x "$ROOT_DIR/scripts/set-wallpaper.sh"
+run chmod +x "$ROOT_DIR/bin/kosmos" "$ROOT_DIR"/scripts/*.sh "$ROOT_DIR"/migrations/*.sh
 for plugin in "$ROOT_DIR"/config/sketchybar/plugins/*.sh; do run chmod +x "$plugin"; done
+for raycast_script in "$ROOT_DIR"/config/raycast/scripts/*.sh; do run chmod +x "$raycast_script"; done
+
+run env KOSMOS_ROOT="$ROOT_DIR" "$ROOT_DIR/scripts/theme.sh" set "$SELECTED_THEME" --no-wallpaper
 
 # Reversible macOS preferences.
 run defaults write NSGlobalDomain AppleInterfaceStyle -string Dark
@@ -106,6 +149,7 @@ run defaults write NSGlobalDomain InitialKeyRepeat -int 12
 run defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 run defaults write com.apple.finder AppleShowAllFiles -bool true
 run defaults write com.apple.dock mru-spaces -bool false
+run defaults write com.apple.dock workspaces-auto-swoosh -bool false
 run defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
 if $DRY_RUN; then
@@ -122,11 +166,12 @@ if ! $DRY_RUN; then
   sleep 1
   launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.sketchybar" 2>/dev/null || true
   launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.borders" 2>/dev/null || true
-  "$ROOT_DIR/scripts/set-wallpaper.sh" "$WALLPAPER_PATH"
+  KOSMOS_ROOT="$ROOT_DIR" "$ROOT_DIR/scripts/theme.sh" set "$SELECTED_THEME"
   killall Finder 2>/dev/null || true
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true
 fi
 
 say "Installation complete."
-say "Next: run $ROOT_DIR/scripts/permissions.sh, approve macOS access, then run $ROOT_DIR/scripts/doctor.sh"
+say "Open Raycast and run ‘Kósmos Status’, or use: kosmos status"
+say "If macOS asks, approve Accessibility and Screen Recording, then run: kosmos doctor"

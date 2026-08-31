@@ -19,6 +19,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 - **ripgrep, fd, jq, mise** — modern developer utilities
 - **Firecrawl CLI** — web search and extraction tooling
 - **JetBrainsMono Nerd Font** and the Osaka Jade color system
+- **Kósmos Command Center** — themes, capture/OCR/QR, transcoding, reminders, notices, snapshots, health checks, and dev layouts
 
 ## Requirements
 
@@ -62,25 +63,57 @@ Enable yabai, skhd, and your terminal under **System Settings → Privacy & Secu
 Then verify the environment:
 
 ```sh
-./scripts/doctor.sh
+kosmos doctor
+kosmos test --live
 ```
 
 If the desktop stack ever stops responding, restart and verify it with:
 
 ```sh
-./scripts/restart.sh
+kosmos restart
 ```
 
 ## Everyday use
 
 Press `Option + Return` for Ghostty or `Shift + Option + Return` for the persistent `main` tmux workspace. Press `Shift + Option + Y` for Yazi and `Shift + Option + V` for Neovim.
 
-See [docs/shortcuts.md](docs/shortcuts.md) for the complete key map.
+Open Raycast and search for “Kósmos” to access status, themes, OCR, QR scanning, a color picker, reminders, and the searchable shortcut sheet. The same tools are available from a terminal:
+
+```sh
+kosmos help
+kosmos status
+kosmos theme set osaka-jade
+kosmos capture text
+kosmos reminder add 20m "Check the oven"
+kosmos dev layout codex
+```
+
+See [docs/command-center.md](docs/command-center.md) for the full CLI and [docs/shortcuts.md](docs/shortcuts.md) for the complete key map.
+
+## Themes
+
+Kósmos ships with two coherent themes that change SketchyBar, borders, Ghostty, tmux, Starship, Neovim, the macOS accent, and wallpaper together:
+
+```sh
+kosmos theme list
+kosmos theme set osaka-jade
+kosmos theme set kosmos
+```
 
 ## Update
 
 ```sh
-./scripts/update.sh
+kosmos update
+```
+
+Updates create a configuration snapshot first, refuse to run over uncommitted repository changes, pull with fast-forward only, install declared dependencies, and apply versioned migrations. Set `KOSMOS_UPGRADE_PACKAGES=true` only when you also want to upgrade every Homebrew package.
+
+Create or restore snapshots directly with:
+
+```sh
+kosmos snapshot create before-experiment
+kosmos snapshot list
+kosmos snapshot restore ~/.local/state/kosmos/snapshots/ARCHIVE.tar.gz --yes
 ```
 
 ## Uninstall

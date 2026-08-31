@@ -52,6 +52,25 @@ The prefix is `Control + Space`.
 | `Shift + H/J/K/L` | Resize panes |
 | `R` | Reload the tmux configuration |
 
+## Terminal workflow
+
+| Command | Action |
+|---|---|
+| `y` | Open Yazi and leave the shell in the directory selected on exit |
+| `t` | Open or attach to the persistent `main` tmux session |
+| `tdl [agent]` | Create the standard editor/agent/shell dev layout |
+| `tds` | Create a balanced four-pane dev layout |
+| `tdlm [agent]` | Create one dev window for each child directory |
+| `tsl COUNT COMMAND` | Create a tiled command swarm |
+| `lg` | Open Lazygit |
+| `ga BRANCH` | Create a Git worktree beside the repository and enter it |
+| `ll` | Detailed Git-aware file listing |
+| `preview FILE` | Preview a file with Bat |
+
+## Raycast commands
+
+Open Raycast and search for “Kósmos” to find Status, Restart, Change Theme, Shortcuts, Copy Text from Screen, Scan QR from Screen, Pick Screen Color, and Quick Reminder.
+
 ## Neovim and Yazi
 
 In Neovim, press `Space` to reveal LazyVim commands. In Yazi, use `H/J/K/L` to navigate and `~` to display its shortcuts.

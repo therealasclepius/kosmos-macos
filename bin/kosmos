@@ -1,0 +1,57 @@
+#!/bin/bash
+set -euo pipefail
+
+source_file=${BASH_SOURCE[0]}
+while [[ -L "$source_file" ]]; do
+  source_dir=$(cd -P "$(dirname "$source_file")" && pwd)
+  source_file=$(readlink "$source_file")
+  [[ "$source_file" != /* ]] && source_file="$source_dir/$source_file"
+done
+KOSMOS_ROOT=$(cd -P "$(dirname "$source_file")/.." && pwd)
+export KOSMOS_ROOT
+
+usage() {
+  cat <<'EOF'
+Kósmos command center
+
+Usage:
+  kosmos status
+  kosmos doctor | test [--live] | restart | update | shortcuts
+  kosmos theme list | current | set <name>
+  kosmos capture screenshot [region|fullscreen] [copy|save]
+  kosmos capture text | qr | color
+  kosmos transcode <file> [1080p|720p|gif]
+  kosmos reminder add <duration> <message...> | list | clear
+  kosmos notice datetime | battery | weather [location]
+  kosmos snapshot create | list | restore <archive> --yes
+  kosmos dev layout [agent] [second-agent]
+  kosmos dev square
+  kosmos dev multi [agent] [second-agent]
+  kosmos dev swarm <count> <command...>
+EOF
+}
+
+command_name=${1:-help}
+shift || true
+
+case "$command_name" in
+  help | -h | --help) usage ;;
+  status) "$KOSMOS_ROOT/scripts/status.sh" "$@" ;;
+  doctor) "$KOSMOS_ROOT/scripts/doctor.sh" "$@" ;;
+  test) "$KOSMOS_ROOT/scripts/test.sh" "$@" ;;
+  restart) "$KOSMOS_ROOT/scripts/restart.sh" "$@" ;;
+  update) "$KOSMOS_ROOT/scripts/update.sh" "$@" ;;
+  shortcuts) open "$KOSMOS_ROOT/docs/shortcuts.md" ;;
+  theme) "$KOSMOS_ROOT/scripts/theme.sh" "$@" ;;
+  capture) "$KOSMOS_ROOT/scripts/capture.sh" "$@" ;;
+  transcode) "$KOSMOS_ROOT/scripts/transcode.sh" "$@" ;;
+  reminder) "$KOSMOS_ROOT/scripts/reminder.sh" "$@" ;;
+  notice) "$KOSMOS_ROOT/scripts/notice.sh" "$@" ;;
+  snapshot) "$KOSMOS_ROOT/scripts/snapshot.sh" "$@" ;;
+  dev) "$KOSMOS_ROOT/scripts/dev-layout.sh" "$@" ;;
+  *)
+    printf 'Unknown command: %s\n\n' "$command_name" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

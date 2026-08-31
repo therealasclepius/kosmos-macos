@@ -2,55 +2,66 @@
 
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 FONT="JetBrainsMono Nerd Font"
+PALETTE_FILE="$HOME/.config/kosmos/palette.sh"
+
+if [[ -r "$PALETTE_FILE" ]]; then
+  # shellcheck disable=SC1090
+  source "$PALETTE_FILE"
+else
+  BAR_BG=0xee111c18 BAR_BORDER=0xff53685b SURFACE=0xff23372b
+  FOREGROUND=0xffc1c497 ACCENT=0xff71cead MUTED=0xff53685b
+  GREEN=0xff63b07a GOLD=0xffd7c995 ACTIVE_TEXT=0xff111c18
+  INACTIVE_SURFACE=0x0023372b
+fi
 
 sketchybar --bar position=top height=28 margin=6 y_offset=3 corner_radius=0 \
-  border_width=1 border_color=0xff53685b color=0xee111c18 shadow=on \
+  border_width=1 border_color="$BAR_BORDER" color="$BAR_BG" shadow=on \
   blur_radius=24 padding_left=8 padding_right=8
 
-sketchybar --default icon.font="$FONT:Semibold:12.0" icon.color=0xffc1c497 \
-  label.font="$FONT:Medium:12.0" label.color=0xffc1c497 \
+sketchybar --default icon.font="$FONT:Semibold:12.0" icon.color="$FOREGROUND" \
+  label.font="$FONT:Medium:12.0" label.color="$FOREGROUND" \
   background.corner_radius=0 background.height=22 padding_left=4 padding_right=4
 
 for sid in 1 2 3 4 5 6 7 8 9; do
   sketchybar --add space "space.$sid" left \
     --set "space.$sid" associated_space="$sid" icon="$sid" label.drawing=off \
       icon.padding_left=7 icon.padding_right=7 background.drawing=on \
-      background.color=0x0023372b click_script="yabai -m space --focus $sid" \
+      background.color="$INACTIVE_SURFACE" click_script="yabai -m space --focus $sid" \
       script="$PLUGIN_DIR/space.sh" \
     --subscribe "space.$sid" space_change
 done
 
 sketchybar --add item front_app left \
-  --set front_app icon="●" icon.color=0xff71cead label.max_chars=32 \
+  --set front_app icon="●" icon.color="$ACCENT" label.max_chars=32 \
     script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
 
 sketchybar --add item clock right \
-  --set clock icon.drawing=off label.color=0xffd7c995 \
+  --set clock icon.drawing=off label.color="$GOLD" \
     background.drawing=off padding_left=6 padding_right=6 \
     update_freq=10 script="$PLUGIN_DIR/clock.sh" click_script="open -a Calendar"
 
 sketchybar --add item battery right \
-  --set battery icon.drawing=off label.color=0xff63b07a \
+  --set battery icon.drawing=off label.color="$GREEN" \
     background.drawing=off padding_left=6 padding_right=6 update_freq=60 \
     script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery system_woke power_source_change
 
 sketchybar --add item volume right \
-  --set volume icon.color=0xff63b07a \
+  --set volume icon.color="$GREEN" \
     background.drawing=off padding_left=6 padding_right=6 \
     script="$PLUGIN_DIR/volume.sh" \
     click_script="open x-apple.systempreferences:com.apple.Sound-Settings.extension" \
   --subscribe volume volume_change system_woke
 
 sketchybar --add item memory right \
-  --set memory icon="" icon.color=0xffd7c995 \
+  --set memory icon="" icon.color="$GOLD" \
     background.drawing=off padding_left=6 padding_right=6 \
     update_freq=15 script="$PLUGIN_DIR/memory.sh" \
     click_script="open -a 'Activity Monitor'"
 
 sketchybar --add item cpu right \
-  --set cpu icon="" icon.color=0xff71cead \
+  --set cpu icon="" icon.color="$ACCENT" \
     background.drawing=off padding_left=6 padding_right=6 \
     update_freq=5 script="$PLUGIN_DIR/cpu.sh" \
     click_script="open -a 'Activity Monitor'"

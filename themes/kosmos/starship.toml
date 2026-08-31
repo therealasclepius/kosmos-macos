@@ -1,0 +1,37 @@
+add_newline = true
+command_timeout = 1000
+format = "$directory$git_branch$git_status$fill$cmd_duration$line_break$character"
+palette = "catppuccin_macchiato"
+
+[directory]
+style = "bold blue"
+truncation_length = 4
+truncate_to_repo = false
+
+[git_branch]
+symbol = "git:"
+style = "mauve"
+
+[git_status]
+style = "yellow"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 1000
+format = "took [$duration]($style)"
+style = "overlay1"
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
+
+[palettes.catppuccin_macchiato]
+red = "#ed8796"
+yellow = "#eed49f"
+green = "#a6da95"
+blue = "#8aadf4"
+mauve = "#c6a0f6"
+overlay1 = "#8087a2"

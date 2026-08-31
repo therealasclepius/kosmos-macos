@@ -14,7 +14,8 @@ check_command() {
 }
 
 printf 'Kósmos system check\n\n'
-for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delta rg fd jq mise firecrawl; do
+for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delta rg fd jq mise firecrawl \
+  starship zoxide fzf eza bat tesseract zbarimg ffmpeg; do
   check_command "$command"
 done
 
@@ -22,7 +23,10 @@ printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
   "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/ghostty/config" \
   "$HOME/.config/sketchybar" "$HOME/.config/borders" \
-  "$HOME/.config/nvim" "$HOME/.config/yazi"; do
+  "$HOME/.config/nvim" "$HOME/.config/yazi" "$HOME/.config/kosmos/shell.zsh" \
+  "$HOME/.config/kosmos/palette.sh" "$HOME/.config/kosmos/ghostty-theme.conf" \
+  "$HOME/.config/kosmos/tmux-theme.conf" "$HOME/.config/kosmos/starship.toml" \
+  "$HOME/.config/kosmos/nvim.lua" "$HOME/.local/bin/kosmos"; do
   if [[ -e "$path" || -L "$path" ]]; then
     printf '✓ %s\n' "$path"
   else
@@ -30,6 +34,22 @@ for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOM
     failures=$((failures + 1))
   fi
 done
+
+if [[ -f "$HOME/.config/kosmos/theme" ]]; then
+  printf '✓ active theme: %s\n' "$(cat "$HOME/.config/kosmos/theme")"
+else
+  printf '✗ no active theme is recorded\n'
+  failures=$((failures + 1))
+fi
+
+raycast_dir=${KOSMOS_RAYCAST_DIR:-"$HOME/Documents/Raycast Script Commands"}
+raycast_count=$(find "$raycast_dir" -maxdepth 1 -name 'kosmos-*.sh' -type l 2>/dev/null | wc -l | tr -d ' ')
+if (( raycast_count >= 8 )); then
+  printf '✓ %s Kósmos commands are available in Raycast\n' "$raycast_count"
+else
+  printf '✗ Raycast Kósmos commands are incomplete (%s found)\n' "$raycast_count"
+  failures=$((failures + 1))
+fi
 
 printf '\nServices\n'
 if yabai -m query --spaces >/dev/null 2>&1; then
@@ -95,6 +115,13 @@ if [[ $(defaults read com.apple.dock mru-spaces 2>/dev/null) == "0" ]]; then
   printf '✓ automatic Space reordering is disabled\n'
 else
   printf '✗ automatic Space reordering is enabled\n'
+  failures=$((failures + 1))
+fi
+
+if [[ $(defaults read com.apple.dock workspaces-auto-swoosh 2>/dev/null) == "0" ]]; then
+  printf '✓ app activation stays on the current Space\n'
+else
+  printf '✗ app activation may switch to a Space with existing windows\n'
   failures=$((failures + 1))
 fi
 

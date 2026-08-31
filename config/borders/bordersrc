@@ -1,11 +1,19 @@
 #!/bin/bash
 
-# Rounded blue highlight that follows macOS window corners; hide inactive borders.
+# Rounded highlight that follows macOS window corners; hide inactive borders.
+PALETTE_FILE="$HOME/.config/kosmos/palette.sh"
+if [[ -r "$PALETTE_FILE" ]]; then
+  # shellcheck disable=SC1090
+  source "$PALETTE_FILE"
+else
+  ACCENT=0xff71cead
+fi
+
 options=(
   style=round
   width=3.0
   hidpi=on
-  active_color=0xff71cead
+  active_color="$ACCENT"
   inactive_color=0x00000000
 )
 
