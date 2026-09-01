@@ -40,6 +40,15 @@ If `kosmos doctor` reports that the SbarLua module is missing, rebuild the pinne
 brew services restart sketchybar
 ```
 
+The weather widget uses network-based automatic location. To pin it to a city, write the city name and refresh the bar:
+
+```sh
+printf '%s\n' 'New York' > "$HOME/.config/kosmos/weather-location"
+sketchybar --trigger forced
+```
+
+Clicking the date opens Notion Calendar when installed, with Apple Calendar as a fallback. Clicking the weather opens the macOS Weather app.
+
 ## Two menu bars are visible
 
 Set **Automatically hide and show the menu bar** to **Always** in System Settings. The Apple menu bar remains accessible by moving the pointer to the top edge.

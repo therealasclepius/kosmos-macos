@@ -6,22 +6,65 @@ local function open_app(name)
   end
 end
 
-local clock = sbar.add("item", "clock", {
+local calendar = sbar.add("item", "calendar", {
   position = "right",
-  icon = { drawing = false },
+  icon = { string = "󰃭", color = colors.accent },
   label = { color = colors.gold },
   background = { drawing = false },
   padding_left = 6,
   padding_right = 6,
-  update_freq = 10,
+  update_freq = 30,
 })
 
-local function update_clock()
-  clock:set({ label = { string = os.date("%I:%M %p"):gsub("^0", "") } })
+local function update_calendar()
+  local date = os.date("%a %d"):gsub(" 0", " ")
+  local time = os.date("%I:%M"):gsub("^0", "")
+  calendar:set({ label = { string = date .. " · " .. time } })
 end
 
-clock:subscribe({ "routine", "forced", "system_woke" }, update_clock)
-clock:subscribe("mouse.clicked", open_app("Calendar"))
+calendar:subscribe({ "routine", "forced", "system_woke" }, update_calendar)
+calendar:subscribe("mouse.clicked", function()
+  sbar.exec("if open -Ra 'Notion Calendar'; then open -a 'Notion Calendar'; else open -a Calendar; fi")
+end)
+
+local function weather_location()
+  local file = io.open(os.getenv("HOME") .. "/.config/kosmos/weather-location", "r")
+  if not file then return "" end
+  local location = file:read("*l") or ""
+  file:close()
+  return location
+end
+
+local function url_encode(value)
+  return value:gsub("([^%w%-_%.~])", function(character)
+    return string.format("%%%02X", string.byte(character))
+  end)
+end
+
+local weather = sbar.add("item", "weather", {
+  position = "right",
+  icon = { drawing = false },
+  label = { string = "--°", color = colors.foreground },
+  background = { drawing = false },
+  padding_left = 5,
+  padding_right = 5,
+  update_freq = 900,
+})
+
+local function update_weather()
+  local location = url_encode(weather_location())
+  local url = "https://wttr.in/" .. location .. "?format=%25c%7C%25t"
+  sbar.exec("curl -fsSL --max-time 8 '" .. url .. "'", function(result)
+    local icon, temperature = result:match("^%s*(.-)%s*|%s*([%+%-]?%d+)°")
+    if not icon or not temperature then return end
+    weather:set({ label = { string = icon .. " " .. temperature:gsub("^%+", "") .. "°" } })
+  end)
+end
+
+weather:subscribe({ "routine", "forced", "system_woke" }, update_weather)
+weather:subscribe("mouse.clicked", function()
+  sbar.exec("open -a Weather")
+end)
 
 local battery = sbar.add("item", "battery", {
   position = "right",
@@ -116,7 +159,8 @@ end
 cpu:subscribe({ "routine", "system_woke" }, update_cpu)
 cpu:subscribe("mouse.clicked", open_app("Activity Monitor"))
 
-update_clock()
+update_calendar()
+update_weather()
 update_battery()
 update_volume()
 update_memory()

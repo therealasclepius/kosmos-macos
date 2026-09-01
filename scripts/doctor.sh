@@ -88,7 +88,7 @@ else
   failures=$((failures + 1))
 fi
 
-for item_name in cpu memory volume; do
+for item_name in cpu memory volume weather calendar; do
   if sketchybar --query "$item_name" >/dev/null 2>&1; then
     printf '✓ SketchyBar %s widget is responding\n' "$item_name"
   else
