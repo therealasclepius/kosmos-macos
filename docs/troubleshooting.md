@@ -47,7 +47,7 @@ printf '%s\n' 'New York' > "$HOME/.config/kosmos/weather-location"
 sketchybar --trigger forced
 ```
 
-Clicking the date opens Notion Calendar when installed, with Apple Calendar as a fallback. Clicking the weather opens the macOS Weather app.
+Left-clicking the date toggles Notion Calendar's native upcoming-meetings menu; right-clicking opens the full app. The menu uses Notion Calendar's default `Control + Command + K` global shortcut, which can be confirmed under **Notion Calendar → Settings → Menu Bar**. Clicking the weather opens the macOS Weather app.
 
 ## Two menu bars are visible
 

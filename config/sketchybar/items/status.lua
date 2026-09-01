@@ -23,8 +23,12 @@ local function update_calendar()
 end
 
 calendar:subscribe({ "routine", "forced", "system_woke" }, update_calendar)
-calendar:subscribe("mouse.clicked", function()
-  sbar.exec("if open -Ra 'Notion Calendar'; then open -a 'Notion Calendar'; else open -a Calendar; fi")
+calendar:subscribe("mouse.clicked", function(env)
+  if env.BUTTON == "right" then
+    sbar.exec("if open -Ra 'Notion Calendar'; then open -a 'Notion Calendar'; else open -a Calendar; fi")
+  else
+    sbar.exec("if pgrep -qx 'Notion Calendar'; then skhd -k 'ctrl + cmd - k'; else open -a 'Notion Calendar'; fi")
+  end
 end)
 
 local function weather_location()

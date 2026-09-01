@@ -9,7 +9,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 ## What it installs
 
 - **yabai + skhd** — BSP tiling and keyboard-driven window control
-- **SketchyBar + SbarLua** — a fast, event-driven Lua bar with desktops, focused app, weather, a Notion Calendar launcher, system metrics, volume, battery, and time
+- **SketchyBar + SbarLua** — a fast, event-driven Lua bar with desktops, focused app, weather, Notion Calendar's upcoming-meetings menu, system metrics, volume, battery, and time
 - **JankyBorders** — active-window focus outline matched to macOS corners
 - **Ghostty + tmux** — Osaka Jade terminal and persistent sessions
 - **Neovim + LazyVim** — polished keyboard-first editing
