@@ -5,7 +5,7 @@ ROOT_DIR=$(cd "$(dirname "$0")/.." && pwd)
 failures=0
 warnings=0
 window_manager=$(cat "$HOME/.config/kosmos/window-manager" 2>/dev/null || printf 'yabai')
-[[ "$window_manager" == omniwm || "$window_manager" == yabai ]] || window_manager=yabai
+[[ "$window_manager" == yashiki || "$window_manager" == omniwm || "$window_manager" == yabai ]] || window_manager=yabai
 check_command() {
   if command -v "$1" >/dev/null 2>&1; then
     printf '✓ %-14s %s\n' "$1" "$(command -v "$1")"
@@ -20,6 +20,10 @@ for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delt
   starship zoxide fzf eza bat tesseract zbarimg ffmpeg lua omniwmctl; do
   check_command "$command"
 done
+
+if [[ "$window_manager" == yashiki ]]; then
+  check_command yashiki
+fi
 
 if [[ -d /Applications/CleanShot\ X.app ]]; then
   printf '✓ CleanShot X is installed\n'
@@ -38,6 +42,7 @@ fi
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
   "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/yabai/follow-activated-window.sh" \
+  "$HOME/.config/yashiki/init" \
   "$HOME/.config/ghostty/config" \
   "$HOME/.config/sketchybar" "$HOME/.config/borders" \
   "$HOME/.config/nvim" "$HOME/.config/yazi" "$HOME/.config/kosmos/shell.zsh" \
@@ -71,7 +76,26 @@ fi
 
 printf '\nServices\n'
 printf '✓ configured window manager: %s\n' "$window_manager"
-if [[ "$window_manager" == omniwm ]]; then
+if [[ "$window_manager" == yashiki ]]; then
+  if pgrep -x yashiki >/dev/null 2>&1 && yashiki get-state >/dev/null 2>&1; then
+    printf '✓ Yashiki is running and responding\n'
+  else
+    printf '✗ Yashiki is not responding\n'
+    failures=$((failures + 1))
+  fi
+  if ! pgrep -x yabai >/dev/null 2>&1 && ! pgrep -x skhd >/dev/null 2>&1 && ! pgrep -x OmniWM >/dev/null 2>&1; then
+    printf '✓ conflicting window managers and hotkeys are stopped\n'
+  else
+    printf '✗ yabai, skhd, or OmniWM is conflicting with Yashiki\n'
+    failures=$((failures + 1))
+  fi
+  if pgrep -x borders >/dev/null 2>&1; then
+    printf '✓ borders is tracked by Yashiki\n'
+  else
+    printf '✗ Yashiki did not start borders\n'
+    failures=$((failures + 1))
+  fi
+elif [[ "$window_manager" == omniwm ]]; then
   if pgrep -x OmniWM >/dev/null 2>&1; then
     printf '✓ OmniWM is running\n'
   else
@@ -103,11 +127,11 @@ else
     printf '✗ borders is not running\n'
     failures=$((failures + 1))
   fi
-  if pgrep -x OmniWM >/dev/null 2>&1; then
-    printf '✗ OmniWM is also running and will conflict with yabai\n'
+  if pgrep -x OmniWM >/dev/null 2>&1 || pgrep -x yashiki >/dev/null 2>&1; then
+    printf '✗ another window manager is also running and will conflict with yabai\n'
     failures=$((failures + 1))
   else
-    printf '✓ OmniWM is stopped\n'
+    printf '✓ OmniWM and Yashiki are stopped\n'
   fi
 fi
 
@@ -127,7 +151,9 @@ for item_name in cpu memory volume weather calendar; do
   fi
 done
 
-if [[ "$window_manager" == omniwm ]]; then
+if [[ "$window_manager" == yashiki ]]; then
+  bar_mode_item=tag.1
+elif [[ "$window_manager" == omniwm ]]; then
   bar_mode_item=wm_mode
 else
   bar_mode_item=space.1
@@ -140,7 +166,20 @@ else
 fi
 
 printf '\nRuntime\n'
-if [[ "$window_manager" == omniwm ]]; then
+if [[ "$window_manager" == yashiki ]]; then
+  if yashiki get-auto-raise 2>/dev/null | grep -q enabled; then
+    printf '✓ Yashiki hover focus is active\n'
+  else
+    printf '✗ Yashiki hover focus is not active\n'
+    failures=$((failures + 1))
+  fi
+  if yashiki list-bindings 2>/dev/null | grep -q 'ctrl-1'; then
+    printf '✓ Yashiki workspace bindings are loaded\n'
+  else
+    printf '✗ Yashiki workspace bindings are missing\n'
+    failures=$((failures + 1))
+  fi
+elif [[ "$window_manager" == omniwm ]]; then
   if [[ $(defaults read com.apple.spaces spans-displays 2>/dev/null || printf '0') != 1 ]]; then
     printf '✓ Displays have separate Spaces is enabled\n'
   else

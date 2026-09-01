@@ -5,7 +5,11 @@ printf 'Kósmos status\n\n'
 window_manager=$(cat "$HOME/.config/kosmos/window-manager" 2>/dev/null || printf 'yabai')
 printf 'Theme:       %s\n' "$(cat "$HOME/.config/kosmos/theme" 2>/dev/null || printf 'osaka-jade')"
 printf 'Window mgr:  %s\n' "$window_manager"
-if [[ "$window_manager" == omniwm ]]; then
+if [[ "$window_manager" == yashiki ]]; then
+  printf 'Desktop:     Yashiki tags\n'
+  printf 'Window mode: %s\n' "$(yashiki layout-get 2>/dev/null || printf 'unavailable')"
+  printf 'Hover focus: %s\n' "$(yashiki get-auto-raise 2>/dev/null || printf 'unavailable')"
+elif [[ "$window_manager" == omniwm ]]; then
   printf 'Desktop:     OmniWM workspace\n'
   printf 'Window mode: managed by OmniWM\n'
   printf 'Hover focus: managed by OmniWM\n'

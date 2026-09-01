@@ -1,0 +1,69 @@
+#!/bin/sh
+
+# Kósmos Yashiki test profile. Yashiki executes this file after its daemon
+# starts, so every setting is rebuilt predictably on each launch.
+yashiki add-exec-path /opt/homebrew/bin
+
+yashiki layout-set-default tatami
+yashiki set-outer-gap 38 10 10 10
+yashiki layout-cmd --layout tatami set-inner-gap 10
+yashiki set-cursor-warp disabled
+yashiki set-auto-raise enabled --delay 100
+yashiki set-menu-bar-status disabled
+
+# Yashiki tags replace native macOS Spaces while this test mode is active.
+for i in 1 2 3 4 5 6 7 8 9; do
+  tag=$((1 << (i - 1)))
+  yashiki bind "ctrl-$i" tag-view "$tag"
+  yashiki bind "alt-shift-$i" window-move-to-tag "$tag"
+done
+yashiki bind ctrl-0 tag-view-last
+
+# Focus and rearrange windows with the same keys as the stable yabai profile.
+yashiki bind alt-h window-focus left
+yashiki bind alt-j window-focus down
+yashiki bind alt-k window-focus up
+yashiki bind alt-l window-focus right
+yashiki bind alt-shift-h window-swap left
+yashiki bind alt-shift-j window-swap down
+yashiki bind alt-shift-k window-swap up
+yashiki bind alt-shift-l window-swap right
+
+# Tatami layout controls.
+yashiki bind ctrl-alt-h layout-cmd dec-main-ratio
+yashiki bind ctrl-alt-l layout-cmd inc-main-ratio
+yashiki bind ctrl-alt-j layout-cmd dec-main-count
+yashiki bind ctrl-alt-k layout-cmd inc-main-count
+yashiki bind alt-b retile
+yashiki bind alt-z layout-cmd zoom
+yashiki bind alt-f window-toggle-fullscreen
+yashiki bind alt-shift-space window-toggle-float
+yashiki bind ctrl-alt-b layout-set tatami
+yashiki bind ctrl-alt-s layout-set byobu
+
+# Terminal tools and common apps.
+yashiki bind alt-return exec "open -na /Applications/Ghostty.app"
+yashiki bind alt-shift-return exec "open -na /Applications/Ghostty.app --args -e tmux new-session -A -s main"
+yashiki bind alt-shift-v exec "open -na /Applications/Ghostty.app --args -e nvim"
+yashiki bind alt-shift-y exec "open -na /Applications/Ghostty.app --args -e yazi"
+yashiki bind alt-shift-e exec-or-focus --app-name Finder "open -a Finder"
+yashiki bind alt-shift-m exec-or-focus --app-name Messages "open -a Messages"
+yashiki bind alt-shift-n exec-or-focus --app-name Notes "open -a Notes"
+yashiki bind alt-shift-i exec-or-focus --app-name Mail "open -a Mail"
+
+# CleanShot owns the normal macOS screenshot keys in every window-manager mode.
+yashiki bind cmd-shift-3 exec "open 'cleanshot://capture-fullscreen'"
+yashiki bind cmd-shift-4 exec "open 'cleanshot://capture-area'"
+yashiki bind cmd-shift-5 exec "open 'cleanshot://all-in-one'"
+
+# Ignore transient UI and float dialogs instead of forcing them into the tree.
+yashiki rule-add --window-level other ignore
+yashiki rule-add --window-level floating float
+yashiki rule-add --subrole Dialog float
+yashiki rule-add --close-button none ignore
+yashiki rule-add --fullscreen-button none float
+yashiki rule-add --app-id com.mitchellh.ghostty --fullscreen-button disabled ignore
+
+# Companion processes exit automatically when Yashiki quits.
+yashiki exec --track "$HOME/.config/borders/bordersrc"
+yashiki exec --track "$HOME/.config/sketchybar/plugins/yashiki_bridge.sh"

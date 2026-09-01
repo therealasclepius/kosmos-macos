@@ -14,8 +14,9 @@ The `kosmos` command is the single entry point for managing the environment. Ray
 | `kosmos update` | Snapshot, fast-forward update, install dependencies, migrate, and restart |
 | `kosmos shortcuts` | Open the complete keyboard reference |
 | `kosmos wm status` | Show the configured and running window-manager stack |
+| `kosmos wm yashiki` | Snapshot, isolate the other managers, and enter Yashiki tag-workspace test mode |
 | `kosmos wm omniwm` | Snapshot, stop yabai/skhd/borders, and enter OmniWM test mode |
-| `kosmos wm yabai` | Stop OmniWM and restore the complete yabai stack |
+| `kosmos wm yabai` | Stop Yashiki or OmniWM and restore the complete yabai stack |
 | `kosmos wm restart` | Restart only the currently selected window-manager stack |
 
 Raycast also exposes these actions as **Switch Kósmos Window Manager**.

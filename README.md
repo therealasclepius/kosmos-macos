@@ -10,6 +10,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 
 - **yabai + skhd** — BSP tiling and keyboard-driven window control
 - **Optional OmniWM test mode** — reversible Niri/Dwindle evaluation without running two window managers together
+- **Optional Yashiki test mode** — reversible tag workspaces, delayed hover-focus, and shell-configured Rust tiling
 - **SketchyBar + SbarLua** — a fast, event-driven Lua bar with desktops, focused app, weather, Notion Calendar's upcoming-meetings menu, system metrics, volume, battery, and time
 - **JankyBorders** — active-window focus outline matched to macOS corners
 - **Ghostty + tmux** — Osaka Jade terminal and persistent sessions
@@ -85,6 +86,19 @@ kosmos wm yabai
 ```
 
 The first command creates a snapshot and stops yabai, skhd, and JankyBorders before launching OmniWM. Switching back restores the complete original stack. OmniWM requires Accessibility and Input Monitoring; its optional Screen Recording permission enables Overview thumbnails and drag previews.
+
+Yashiki is also available as an experimental third mode:
+
+```sh
+brew tap typester/yashiki
+brew trust --cask typester/yashiki/yashiki
+brew install --cask typester/yashiki/yashiki
+kosmos wm yashiki
+kosmos wm status
+kosmos wm yabai
+```
+
+The explicit trust applies only to Yashiki's cask definition, not the entire third-party tap. Yashiki is unsigned and early-stage software. Kósmos keeps macOS quarantine enabled, requires the normal Privacy & Security approval, and never runs it beside yabai or OmniWM.
 
 ## Everyday use
 

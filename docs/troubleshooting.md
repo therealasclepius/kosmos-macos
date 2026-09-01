@@ -41,6 +41,18 @@ Return immediately to the stable setup with:
 kosmos wm yabai
 ```
 
+## Yashiki is blocked or does not start
+
+Yashiki is currently distributed as an unsigned application. Kósmos deliberately keeps quarantine enabled. After the first launch attempt, dismiss the warning, open **System Settings → Privacy & Security**, scroll to the bottom, choose **Open Anyway** for Yashiki, and confirm the macOS prompt. Then add `/Applications/Yashiki.app` under Accessibility and enable its toggle.
+
+Retry with:
+
+```sh
+kosmos wm yashiki
+```
+
+Yashiki uses virtual tags on native Desktop 1. `Control + 1–9` changes tags, `Option + Shift + 1–9` moves the focused window, and `kosmos wm yabai` performs the immediate rollback.
+
 ## SketchyBar is missing
 
 ```sh

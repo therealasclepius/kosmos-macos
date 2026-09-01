@@ -2,7 +2,7 @@
 
 `Option` is the primary window-control modifier. This avoids taking over macOS's familiar `Command` shortcuts.
 
-These shortcuts apply in the default yabai mode. OmniWM test mode stops skhd to prevent conflicts and uses OmniWM's customizable shortcuts instead: `Option + 1–9` switches workspaces, `Option + Shift + 1–9` moves a window, `Option + Arrow Keys` changes focus, and `Control + Option + Space` opens its command palette.
+These shortcuts apply in the default yabai mode. Yashiki test mode keeps the same focus, move, app, terminal, CleanShot, fullscreen, and `Control + 1–9` workspace keys through Yashiki's own binder. `Control + 0` returns to the previous Yashiki tag and `Option + Z` promotes a window to the main tile. OmniWM test mode instead uses its customizable shortcuts: `Option + 1–9` switches workspaces, `Option + Shift + 1–9` moves a window, `Option + Arrow Keys` changes focus, and `Control + Option + Space` opens its command palette.
 
 ## Windows
 

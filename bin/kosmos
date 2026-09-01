@@ -17,7 +17,7 @@ Kósmos command center
 Usage:
   kosmos status
   kosmos doctor | test [--live] | restart | update | shortcuts
-  kosmos wm omniwm | yabai | status | restart
+  kosmos wm yashiki | omniwm | yabai | status | restart
   kosmos theme list | current | set <name>
   kosmos capture screenshot [region|fullscreen] [copy|save]
   kosmos capture text | qr | color

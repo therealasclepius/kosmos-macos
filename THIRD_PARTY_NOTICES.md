@@ -40,6 +40,13 @@ Kósmos can install and launch [OmniWM](https://github.com/BarutSRB/OmniWM)
 as an optional, isolated window-manager test mode. OmniWM is distributed under
 the GNU General Public License version 2. Its code is not copied into Kósmos.
 
+## Yashiki
+
+Kósmos can install and launch [Yashiki](https://github.com/typester/yashiki)
+as an optional, isolated window-manager test mode. The SketchyBar event bridge
+is adapted from Yashiki's upstream example. Yashiki is distributed under the
+MIT License, Copyright (c) Daisuke Murase.
+
 ## Omarchy
 
 Kósmos is an independent macOS project inspired by Omarchy's cohesive theme,
