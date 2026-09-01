@@ -27,6 +27,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+## SbarLua
+
+Kósmos installs [SbarLua](https://github.com/FelixKratz/SbarLua), a Lua API
+module for SketchyBar, under the GNU General Public License version 3. SbarLua
+is not copied into this repository; the installer builds it from its upstream
+source and records the installed revision.
+
 ## Omarchy
 
 Kósmos is an independent macOS project inspired by Omarchy's cohesive theme,

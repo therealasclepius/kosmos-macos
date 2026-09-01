@@ -24,6 +24,7 @@ brew "bat"
 brew "tesseract"
 brew "zbar"
 brew "ffmpeg"
+brew "lua"
 
 cask "ghostty"
 cask "raycast"

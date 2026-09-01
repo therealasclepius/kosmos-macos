@@ -9,7 +9,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 ## What it installs
 
 - **yabai + skhd** — BSP tiling and keyboard-driven window control
-- **SketchyBar** — desktops, focused app, system metrics, volume, battery, and time
+- **SketchyBar + SbarLua** — a fast, event-driven Lua bar with desktops, focused app, system metrics, volume, battery, and time
 - **JankyBorders** — active-window focus outline matched to macOS corners
 - **Ghostty + tmux** — Osaka Jade terminal and persistent sessions
 - **Neovim + LazyVim** — polished keyboard-first editing
@@ -27,6 +27,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 - macOS on Apple Silicon (Intel may work but is not yet tested)
 - An administrator account
 - Internet access
+- Xcode Command Line Tools (Homebrew normally prompts to install them)
 - Roughly 15 minutes, including macOS permission approval
 
 ## Install

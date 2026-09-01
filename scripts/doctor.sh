@@ -15,7 +15,7 @@ check_command() {
 
 printf 'Kósmos system check\n\n'
 for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delta rg fd jq mise firecrawl \
-  starship zoxide fzf eza bat tesseract zbarimg ffmpeg; do
+  starship zoxide fzf eza bat tesseract zbarimg ffmpeg lua; do
   check_command "$command"
 done
 
@@ -26,6 +26,13 @@ else
   failures=$((failures + 1))
 fi
 
+if [[ -f "$HOME/.local/share/sketchybar_lua/sketchybar.so" ]]; then
+  printf '✓ SbarLua module is installed\n'
+else
+  printf '✗ SbarLua module is missing\n'
+  failures=$((failures + 1))
+fi
+
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
   "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/ghostty/config" \
@@ -33,7 +40,8 @@ for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOM
   "$HOME/.config/nvim" "$HOME/.config/yazi" "$HOME/.config/kosmos/shell.zsh" \
   "$HOME/.config/kosmos/palette.sh" "$HOME/.config/kosmos/ghostty-theme.conf" \
   "$HOME/.config/kosmos/tmux-theme.conf" "$HOME/.config/kosmos/starship.toml" \
-  "$HOME/.config/kosmos/nvim.lua" "$HOME/.local/bin/kosmos"; do
+  "$HOME/.config/kosmos/nvim.lua" "$HOME/.config/kosmos/palette.lua" \
+  "$HOME/.local/bin/kosmos"; do
   if [[ -e "$path" || -L "$path" ]]; then
     printf '✓ %s\n' "$path"
   else

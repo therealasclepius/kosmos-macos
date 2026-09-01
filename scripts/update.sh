@@ -25,6 +25,7 @@ git -C "$ROOT_DIR" pull --ff-only
 
 printf 'Installing declared dependencies…\n'
 brew bundle --file "$ROOT_DIR/Brewfile"
+"$ROOT_DIR/scripts/install-sbarlua.sh"
 
 printf 'Running Kósmos migrations…\n'
 "$ROOT_DIR/scripts/migrate.sh"

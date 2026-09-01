@@ -46,6 +46,7 @@ apply_theme() {
 
   mkdir -p "$RUNTIME_DIR"
   atomic_copy "$theme_dir/palette.sh" "$RUNTIME_DIR/palette.sh"
+  atomic_copy "$theme_dir/palette.lua" "$RUNTIME_DIR/palette.lua"
   atomic_copy "$theme_dir/ghostty.conf" "$RUNTIME_DIR/ghostty-theme.conf"
   atomic_copy "$theme_dir/tmux.conf" "$RUNTIME_DIR/tmux-theme.conf"
   atomic_copy "$theme_dir/starship.toml" "$RUNTIME_DIR/starship.toml"

@@ -53,6 +53,7 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 
 run brew bundle --file "$ROOT_DIR/Brewfile"
+run "$ROOT_DIR/scripts/install-sbarlua.sh"
 
 if command -v npm >/dev/null 2>&1; then
   if ! command -v firecrawl >/dev/null 2>&1; then

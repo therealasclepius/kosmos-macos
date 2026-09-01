@@ -33,6 +33,13 @@ brew services restart sketchybar
 
 If macOS requests Screen Recording, grant it under **Privacy & Security → Screen & System Audio Recording**, then restart SketchyBar.
 
+If `kosmos doctor` reports that the SbarLua module is missing, rebuild the pinned version and restart the bar:
+
+```sh
+./scripts/install-sbarlua.sh
+brew services restart sketchybar
+```
+
 ## Two menu bars are visible
 
 Set **Automatically hide and show the menu bar** to **Always** in System Settings. The Apple menu bar remains accessible by moving the pointer to the top edge.

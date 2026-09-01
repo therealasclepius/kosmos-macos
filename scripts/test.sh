@@ -12,12 +12,19 @@ for script in \
   "$ROOT_DIR"/scripts/*.sh "$ROOT_DIR"/migrations/*.sh \
   "$ROOT_DIR"/config/raycast/scripts/*.sh \
   "$ROOT_DIR"/config/sketchybar/plugins/*.sh \
-  "$ROOT_DIR/config/sketchybar/sketchybarrc" \
   "$ROOT_DIR/config/borders/bordersrc" "$ROOT_DIR/config/yabairc"; do
   bash -n "$script"
 done
 zsh -n "$ROOT_DIR/config/zsh/kosmos.zsh"
 printf '✓ shell syntax\n'
+
+if command -v luac >/dev/null 2>&1; then
+  for lua_file in "$ROOT_DIR"/config/sketchybar/*.lua "$ROOT_DIR"/config/sketchybar/items/*.lua "$ROOT_DIR"/themes/*/*.lua; do
+    luac -p "$lua_file"
+  done
+  luac -p "$ROOT_DIR/config/sketchybar/sketchybarrc"
+  printf '✓ Lua syntax\n'
+fi
 
 git -C "$ROOT_DIR" diff --check
 printf '✓ patch whitespace\n'
