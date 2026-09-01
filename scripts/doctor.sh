@@ -35,7 +35,8 @@ fi
 
 printf '\nConfiguration\n'
 for path in "$HOME/.yabairc" "$HOME/.config/yabai/yabairc" "$HOME/.skhdrc" "$HOME/.tmux.conf" \
-  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/ghostty/config" \
+  "$HOME/.config/yabai/toggle-maximize.sh" "$HOME/.config/yabai/follow-activated-window.sh" \
+  "$HOME/.config/ghostty/config" \
   "$HOME/.config/sketchybar" "$HOME/.config/borders" \
   "$HOME/.config/nvim" "$HOME/.config/yazi" "$HOME/.config/kosmos/shell.zsh" \
   "$HOME/.config/kosmos/palette.sh" "$HOME/.config/kosmos/ghostty-theme.conf" \
@@ -126,6 +127,13 @@ else
   failures=$((failures + 1))
 fi
 
+if yabai -m signal --list 2>/dev/null | jq -e '.[] | select(.label == "kosmos_follow_app")' >/dev/null; then
+  printf '✓ activated apps follow their windows across Spaces\n'
+else
+  printf '✗ activated-app Space following is missing\n'
+  failures=$((failures + 1))
+fi
+
 if [[ $(defaults read com.apple.dock mru-spaces 2>/dev/null) == "0" ]]; then
   printf '✓ automatic Space reordering is disabled\n'
 else
@@ -133,10 +141,10 @@ else
   failures=$((failures + 1))
 fi
 
-if [[ $(defaults read com.apple.dock workspaces-auto-swoosh 2>/dev/null) == "0" ]]; then
-  printf '✓ app activation stays on the current Space\n'
+if [[ $(defaults read com.apple.dock workspaces-auto-swoosh 2>/dev/null) == "1" ]]; then
+  printf '✓ app activation follows windows to their Space\n'
 else
-  printf '✗ app activation may switch to a Space with existing windows\n'
+  printf '✗ app activation may not reveal windows on another Space\n'
   failures=$((failures + 1))
 fi
 

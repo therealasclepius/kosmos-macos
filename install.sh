@@ -89,6 +89,7 @@ install_link "$ROOT_DIR/config/yabairc" "$HOME/.yabairc"
 install_link "$ROOT_DIR/assets/osaka-jade-bg.jpg" "$WALLPAPER_PATH"
 install_link "$ROOT_DIR/config/yabairc" "$HOME/.config/yabai/yabairc"
 install_link "$ROOT_DIR/config/yabai/toggle-maximize.sh" "$HOME/.config/yabai/toggle-maximize.sh"
+install_link "$ROOT_DIR/config/yabai/follow-activated-window.sh" "$HOME/.config/yabai/follow-activated-window.sh"
 install_link "$ROOT_DIR/config/skhdrc" "$HOME/.skhdrc"
 install_link "$ROOT_DIR/config/tmux.conf" "$HOME/.tmux.conf"
 install_link "$ROOT_DIR/config/ghostty/config" "$HOME/.config/ghostty/config"
@@ -136,6 +137,7 @@ fi
 run chmod +x "$ROOT_DIR/config/yabairc" "$ROOT_DIR/config/sketchybar/sketchybarrc"
 run chmod +x "$ROOT_DIR/config/borders/bordersrc"
 run chmod +x "$ROOT_DIR/config/yabai/toggle-maximize.sh"
+run chmod +x "$ROOT_DIR/config/yabai/follow-activated-window.sh"
 run chmod +x "$ROOT_DIR/bin/kosmos" "$ROOT_DIR"/scripts/*.sh "$ROOT_DIR"/migrations/*.sh
 for plugin in "$ROOT_DIR"/config/sketchybar/plugins/*.sh; do run chmod +x "$plugin"; done
 for raycast_script in "$ROOT_DIR"/config/raycast/scripts/*.sh; do run chmod +x "$raycast_script"; done
@@ -153,7 +155,7 @@ run defaults write com.apple.finder AppleShowAllFiles -bool true
 run defaults write com.apple.screencapture location -string "$CAPTURE_DIR"
 run defaults write com.apple.screencapture show-thumbnail -bool true
 run defaults write com.apple.dock mru-spaces -bool false
-run defaults write com.apple.dock workspaces-auto-swoosh -bool false
+run defaults write com.apple.dock workspaces-auto-swoosh -bool true
 run defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
 if $DRY_RUN; then

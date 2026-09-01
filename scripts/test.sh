@@ -10,6 +10,7 @@ printf 'Kósmos smoke tests\n\n'
 for script in \
   "$ROOT_DIR/bin/kosmos" "$ROOT_DIR/install.sh" "$ROOT_DIR/uninstall.sh" \
   "$ROOT_DIR"/scripts/*.sh "$ROOT_DIR"/migrations/*.sh \
+  "$ROOT_DIR"/config/yabai/*.sh \
   "$ROOT_DIR"/config/raycast/scripts/*.sh \
   "$ROOT_DIR"/config/sketchybar/plugins/*.sh \
   "$ROOT_DIR/config/borders/bordersrc" "$ROOT_DIR/config/yabairc"; do

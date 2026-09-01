@@ -12,3 +12,7 @@ yabai -m config focus_follows_mouse autofocus
 # Restore hover focus after macOS Space transitions.
 yabai -m signal --remove kosmos_restore_hover 2>/dev/null || true
 yabai -m signal --add label=kosmos_restore_hover event=space_changed action="yabai -m config focus_follows_mouse autofocus"
+
+# Reveal the existing window of an app activated from Raycast, the Dock, or a launcher.
+yabai -m signal --remove kosmos_follow_app 2>/dev/null || true
+yabai -m signal --add label=kosmos_follow_app event=application_front_switched action="$HOME/.config/yabai/follow-activated-window.sh \$YABAI_PROCESS_ID"

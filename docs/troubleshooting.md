@@ -57,6 +57,17 @@ Set **Automatically hide and show the menu bar** to **Always** in System Setting
 
 Kósmos maps Desktops 1–9, but macOS must already have those desktops. Create them in Mission Control. Also disable conflicting macOS shortcuts under **Keyboard → Keyboard Shortcuts → Mission Control**.
 
+## An app opens on another Desktop but does not appear
+
+Kósmos enables macOS's application-following behavior so activating an app reveals its window even when that window is on another Desktop. Restore it with:
+
+```sh
+defaults write com.apple.dock workspaces-auto-swoosh -bool true
+killall Dock
+```
+
+Kósmos also registers a yabai activation hook for apps that macOS focuses without revealing. Restore both pieces with `kosmos restart`.
+
 ## Desktop icons are hidden
 
 Disabling Finder's desktop layer keeps the wallpaper clean, but yabai may not be able to focus a completely empty Space reliably. Kósmos leaves the desktop layer enabled by default. To hide it deliberately:
