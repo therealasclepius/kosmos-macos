@@ -2,6 +2,8 @@
 
 `Option` is the primary window-control modifier. This avoids taking over macOS's familiar `Command` shortcuts.
 
+These shortcuts apply in the default yabai mode. OmniWM test mode stops skhd to prevent conflicts and uses OmniWM's customizable shortcuts instead: `Option + 1–9` switches workspaces, `Option + Shift + 1–9` moves a window, `Option + Arrow Keys` changes focus, and `Control + Option + Space` opens its command palette.
+
 ## Windows
 
 | Shortcut | Action |

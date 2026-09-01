@@ -158,20 +158,10 @@ run defaults write com.apple.dock mru-spaces -bool false
 run defaults write com.apple.dock workspaces-auto-swoosh -bool true
 run defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
-if $DRY_RUN; then
-  run yabai --start-service
-  run skhd --start-service
-else
-  yabai --start-service 2>/dev/null || yabai --restart-service
-  skhd --start-service 2>/dev/null || skhd --restart-service
-fi
-run brew services restart sketchybar
-run brew services restart borders
+run "$ROOT_DIR/scripts/window-manager.sh" restart
 
 if ! $DRY_RUN; then
   sleep 1
-  launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.sketchybar" 2>/dev/null || true
-  launchctl kickstart -k "gui/$(id -u)/homebrew.mxcl.borders" 2>/dev/null || true
   KOSMOS_ROOT="$ROOT_DIR" "$ROOT_DIR/scripts/theme.sh" set "$SELECTED_THEME"
   killall Finder 2>/dev/null || true
   killall Dock 2>/dev/null || true

@@ -10,9 +10,15 @@ The `kosmos` command is the single entry point for managing the environment. Ray
 | `kosmos doctor` | Run a complete dependency, configuration, service, and runtime check |
 | `kosmos test` | Run non-destructive syntax and application smoke tests |
 | `kosmos test --live` | Run smoke tests followed by the complete live doctor |
-| `kosmos restart` | Restart yabai, skhd, SketchyBar, and borders, then run the doctor |
+| `kosmos restart` | Restart the selected window manager and SketchyBar, then run the doctor |
 | `kosmos update` | Snapshot, fast-forward update, install dependencies, migrate, and restart |
 | `kosmos shortcuts` | Open the complete keyboard reference |
+| `kosmos wm status` | Show the configured and running window-manager stack |
+| `kosmos wm omniwm` | Snapshot, stop yabai/skhd/borders, and enter OmniWM test mode |
+| `kosmos wm yabai` | Stop OmniWM and restore the complete yabai stack |
+| `kosmos wm restart` | Restart only the currently selected window-manager stack |
+
+Raycast also exposes these actions as **Switch Kósmos Window Manager**.
 
 ## Themes
 

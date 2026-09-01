@@ -25,6 +25,22 @@ yabai --restart-service
 
 Confirm yabai has Accessibility access, then select BSP mode with `Control + Option + B`. Some dialogs, preference panels, and non-resizable application windows cannot tile normally.
 
+## OmniWM test mode does not tile
+
+Open OmniWM and grant both required permissions: **Accessibility** and **Input Monitoring**. Screen Recording is optional. OmniWM manages only the active native macOS Space, so test it on Desktop 1 and use OmniWM's own workspaces from there.
+
+Check that the window-manager stacks are not conflicting:
+
+```sh
+kosmos wm status
+```
+
+Return immediately to the stable setup with:
+
+```sh
+kosmos wm yabai
+```
+
 ## SketchyBar is missing
 
 ```sh

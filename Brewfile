@@ -1,5 +1,6 @@
 tap "asmvik/formulae"
 tap "FelixKratz/formulae"
+tap "BarutSRB/tap"
 
 brew "asmvik/formulae/yabai"
 brew "asmvik/formulae/skhd"
@@ -29,4 +30,5 @@ brew "lua"
 cask "ghostty"
 cask "raycast"
 cask "cleanshot"
+cask "omniwm"
 cask "font-jetbrains-mono-nerd-font"

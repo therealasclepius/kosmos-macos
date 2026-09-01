@@ -34,6 +34,12 @@ module for SketchyBar, under the GNU General Public License version 3. SbarLua
 is not copied into this repository; the installer builds it from its upstream
 source and records the installed revision.
 
+## OmniWM
+
+Kósmos can install and launch [OmniWM](https://github.com/BarutSRB/OmniWM)
+as an optional, isolated window-manager test mode. OmniWM is distributed under
+the GNU General Public License version 2. Its code is not copied into Kósmos.
+
 ## Omarchy
 
 Kósmos is an independent macOS project inspired by Omarchy's cohesive theme,

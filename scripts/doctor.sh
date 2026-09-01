@@ -4,6 +4,8 @@ set -u
 ROOT_DIR=$(cd "$(dirname "$0")/.." && pwd)
 failures=0
 warnings=0
+window_manager=$(cat "$HOME/.config/kosmos/window-manager" 2>/dev/null || printf 'yabai')
+[[ "$window_manager" == omniwm || "$window_manager" == yabai ]] || window_manager=yabai
 check_command() {
   if command -v "$1" >/dev/null 2>&1; then
     printf '✓ %-14s %s\n' "$1" "$(command -v "$1")"
@@ -15,7 +17,7 @@ check_command() {
 
 printf 'Kósmos system check\n\n'
 for command in brew yabai skhd sketchybar borders tmux nvim yazi lazygit gh delta rg fd jq mise firecrawl \
-  starship zoxide fzf eza bat tesseract zbarimg ffmpeg lua; do
+  starship zoxide fzf eza bat tesseract zbarimg ffmpeg lua omniwmctl; do
   check_command "$command"
 done
 
@@ -68,18 +70,45 @@ else
 fi
 
 printf '\nServices\n'
-if yabai -m query --spaces >/dev/null 2>&1; then
-  printf '✓ yabai is responding\n'
+printf '✓ configured window manager: %s\n' "$window_manager"
+if [[ "$window_manager" == omniwm ]]; then
+  if pgrep -x OmniWM >/dev/null 2>&1; then
+    printf '✓ OmniWM is running\n'
+  else
+    printf '✗ OmniWM is not running\n'
+    failures=$((failures + 1))
+  fi
+  if ! pgrep -x yabai >/dev/null 2>&1 && ! pgrep -x skhd >/dev/null 2>&1 && ! pgrep -x borders >/dev/null 2>&1; then
+    printf '✓ the conflicting yabai stack is stopped\n'
+  else
+    printf '✗ a conflicting yabai, skhd, or borders process is running\n'
+    failures=$((failures + 1))
+  fi
 else
-  printf '✗ yabai is not responding\n'
-  failures=$((failures + 1))
-fi
-
-if launchctl print "gui/$(id -u)/com.koekeishiya.skhd" 2>/dev/null | grep -q 'state = running'; then
-  printf '✓ skhd is running\n'
-else
-  printf '✗ skhd is not running\n'
-  failures=$((failures + 1))
+  if yabai -m query --spaces >/dev/null 2>&1; then
+    printf '✓ yabai is responding\n'
+  else
+    printf '✗ yabai is not responding\n'
+    failures=$((failures + 1))
+  fi
+  if launchctl print "gui/$(id -u)/com.koekeishiya.skhd" 2>/dev/null | grep -q 'state = running'; then
+    printf '✓ skhd is running\n'
+  else
+    printf '✗ skhd is not running\n'
+    failures=$((failures + 1))
+  fi
+  if pgrep -x borders >/dev/null 2>&1; then
+    printf '✓ borders is running\n'
+  else
+    printf '✗ borders is not running\n'
+    failures=$((failures + 1))
+  fi
+  if pgrep -x OmniWM >/dev/null 2>&1; then
+    printf '✗ OmniWM is also running and will conflict with yabai\n'
+    failures=$((failures + 1))
+  else
+    printf '✓ OmniWM is stopped\n'
+  fi
 fi
 
 if sketchybar --query bar >/dev/null 2>&1; then
@@ -98,54 +127,69 @@ for item_name in cpu memory volume weather calendar; do
   fi
 done
 
-if pgrep -x borders >/dev/null 2>&1; then
-  printf '✓ borders is running\n'
+if [[ "$window_manager" == omniwm ]]; then
+  bar_mode_item=wm_mode
 else
-  printf '✗ borders is not running\n'
+  bar_mode_item=space.1
+fi
+if sketchybar --query "$bar_mode_item" >/dev/null 2>&1; then
+  printf '✓ SketchyBar reflects %s mode\n' "$window_manager"
+else
+  printf '✗ SketchyBar does not reflect %s mode\n' "$window_manager"
   failures=$((failures + 1))
 fi
 
 printf '\nRuntime\n'
-if [[ $(yabai -m config layout 2>/dev/null) == "bsp" ]]; then
-  printf '✓ BSP tiling is active\n'
+if [[ "$window_manager" == omniwm ]]; then
+  if [[ $(defaults read com.apple.spaces spans-displays 2>/dev/null || printf '0') != 1 ]]; then
+    printf '✓ Displays have separate Spaces is enabled\n'
+  else
+    printf '✗ OmniWM requires Displays have separate Spaces\n'
+    failures=$((failures + 1))
+  fi
+  if omniwmctl ping >/dev/null 2>&1; then
+    printf '✓ OmniWM IPC is responding\n'
+  else
+    printf '! OmniWM IPC is disabled; enable it from the OmniWM menu for CLI integration\n'
+    warnings=$((warnings + 1))
+  fi
 else
-  printf '✗ BSP tiling is not active\n'
-  failures=$((failures + 1))
-fi
-
-if [[ $(yabai -m config focus_follows_mouse 2>/dev/null) == "autofocus" ]]; then
-  printf '✓ hover focus is active\n'
-else
-  printf '✗ hover focus is not active\n'
-  failures=$((failures + 1))
-fi
-
-if yabai -m signal --list 2>/dev/null | jq -e '.[] | select(.label == "kosmos_restore_hover")' >/dev/null; then
-  printf '✓ hover-focus recovery is registered\n'
-else
-  printf '✗ hover-focus recovery is missing\n'
-  failures=$((failures + 1))
-fi
-
-if yabai -m signal --list 2>/dev/null | jq -e '.[] | select(.label == "kosmos_follow_app")' >/dev/null; then
-  printf '✓ activated apps follow their windows across Spaces\n'
-else
-  printf '✗ activated-app Space following is missing\n'
-  failures=$((failures + 1))
-fi
-
-if [[ $(defaults read com.apple.dock mru-spaces 2>/dev/null) == "0" ]]; then
-  printf '✓ automatic Space reordering is disabled\n'
-else
-  printf '✗ automatic Space reordering is enabled\n'
-  failures=$((failures + 1))
-fi
-
-if [[ $(defaults read com.apple.dock workspaces-auto-swoosh 2>/dev/null) == "1" ]]; then
-  printf '✓ app activation follows windows to their Space\n'
-else
-  printf '✗ app activation may not reveal windows on another Space\n'
-  failures=$((failures + 1))
+  if [[ $(yabai -m config layout 2>/dev/null) == "bsp" ]]; then
+    printf '✓ BSP tiling is active\n'
+  else
+    printf '✗ BSP tiling is not active\n'
+    failures=$((failures + 1))
+  fi
+  if [[ $(yabai -m config focus_follows_mouse 2>/dev/null) == "autofocus" ]]; then
+    printf '✓ hover focus is active\n'
+  else
+    printf '✗ hover focus is not active\n'
+    failures=$((failures + 1))
+  fi
+  if yabai -m signal --list 2>/dev/null | jq -e '.[] | select(.label == "kosmos_restore_hover")' >/dev/null; then
+    printf '✓ hover-focus recovery is registered\n'
+  else
+    printf '✗ hover-focus recovery is missing\n'
+    failures=$((failures + 1))
+  fi
+  if yabai -m signal --list 2>/dev/null | jq -e '.[] | select(.label == "kosmos_follow_app")' >/dev/null; then
+    printf '✓ activated apps follow their windows across Spaces\n'
+  else
+    printf '✗ activated-app Space following is missing\n'
+    failures=$((failures + 1))
+  fi
+  if [[ $(defaults read com.apple.dock mru-spaces 2>/dev/null) == "0" ]]; then
+    printf '✓ automatic Space reordering is disabled\n'
+  else
+    printf '✗ automatic Space reordering is enabled\n'
+    failures=$((failures + 1))
+  fi
+  if [[ $(defaults read com.apple.dock workspaces-auto-swoosh 2>/dev/null) == "1" ]]; then
+    printf '✓ app activation follows windows to their Space\n'
+  else
+    printf '✗ app activation may not reveal windows on another Space\n'
+    failures=$((failures + 1))
+  fi
 fi
 
 if [[ $(defaults read com.apple.WindowManager EnableStandardClickToShowDesktop 2>/dev/null) == "0" ]]; then
@@ -155,9 +199,11 @@ else
   warnings=$((warnings + 1))
 fi
 
-if [[ $(defaults read com.apple.finder CreateDesktop 2>/dev/null) == "0" ]]; then
+if [[ "$window_manager" == yabai && $(defaults read com.apple.finder CreateDesktop 2>/dev/null) == "0" ]]; then
   printf '! desktop icons are hidden; focusing a completely empty Space may be less reliable\n'
   warnings=$((warnings + 1))
+elif [[ $(defaults read com.apple.finder CreateDesktop 2>/dev/null) == "0" ]]; then
+  printf '✓ desktop icons are hidden\n'
 fi
 
 expected_capture_dir="$HOME/Pictures/Kosmos Captures"

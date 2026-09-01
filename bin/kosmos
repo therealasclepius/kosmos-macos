@@ -17,6 +17,7 @@ Kósmos command center
 Usage:
   kosmos status
   kosmos doctor | test [--live] | restart | update | shortcuts
+  kosmos wm omniwm | yabai | status | restart
   kosmos theme list | current | set <name>
   kosmos capture screenshot [region|fullscreen] [copy|save]
   kosmos capture text | qr | color
@@ -42,6 +43,7 @@ case "$command_name" in
   restart) "$KOSMOS_ROOT/scripts/restart.sh" "$@" ;;
   update) "$KOSMOS_ROOT/scripts/update.sh" "$@" ;;
   shortcuts) open "$KOSMOS_ROOT/docs/shortcuts.md" ;;
+  wm) "$KOSMOS_ROOT/scripts/window-manager.sh" "$@" ;;
   theme) "$KOSMOS_ROOT/scripts/theme.sh" "$@" ;;
   capture) "$KOSMOS_ROOT/scripts/capture.sh" "$@" ;;
   transcode) "$KOSMOS_ROOT/scripts/transcode.sh" "$@" ;;

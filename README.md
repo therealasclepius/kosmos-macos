@@ -9,6 +9,7 @@ Kósmos combines automatic window tiling, fast workspace navigation, a custom st
 ## What it installs
 
 - **yabai + skhd** — BSP tiling and keyboard-driven window control
+- **Optional OmniWM test mode** — reversible Niri/Dwindle evaluation without running two window managers together
 - **SketchyBar + SbarLua** — a fast, event-driven Lua bar with desktops, focused app, weather, Notion Calendar's upcoming-meetings menu, system metrics, volume, battery, and time
 - **JankyBorders** — active-window focus outline matched to macOS corners
 - **Ghostty + tmux** — Osaka Jade terminal and persistent sessions
@@ -74,6 +75,16 @@ If the desktop stack ever stops responding, restart and verify it with:
 ```sh
 kosmos restart
 ```
+
+To test OmniWM without removing the stable yabai setup:
+
+```sh
+kosmos wm omniwm
+kosmos wm status
+kosmos wm yabai
+```
+
+The first command creates a snapshot and stops yabai, skhd, and JankyBorders before launching OmniWM. Switching back restores the complete original stack. OmniWM requires Accessibility and Input Monitoring; its optional Screen Recording permission enables Overview thumbnails and drag previews.
 
 ## Everyday use
 
